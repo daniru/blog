@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { BlogModule } from './blog/blog.module';
 import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from './shared/shared.module';
 import { AppComponent } from './app.component';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AppComponent } from './app.component';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    BlogModule
+    BlogModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]
