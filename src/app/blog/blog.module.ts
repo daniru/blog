@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BlogRoutingModule } from './blog-routing.module';
 import { BlogService } from './services/blog.service';
 import { ListComponent } from './components/list/list.component';
+import { ListItemComponent } from './components/list-item/list-item.component';
 
 @NgModule({
   imports: [
@@ -11,6 +12,6 @@ import { ListComponent } from './components/list/list.component';
     BlogRoutingModule
   ],
   providers: [BlogService],
-  declarations: [ListComponent]
+  declarations: [ListComponent, ListItemComponent]
 })
 export class BlogModule { }
