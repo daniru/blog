@@ -5,6 +5,7 @@ import { MdToolbarModule } from '@angular/material';
 import { HeaderComponent } from './components/header/header.component';
 import { MarkdownPipe } from './pipes/markdown.pipe';
 import { PrettyfilePipe } from './pipes/prettyfile.pipe';
+import { ClipboardDirective } from './directives/clipboard.directive';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import { PrettyfilePipe } from './pipes/prettyfile.pipe';
     RouterModule,
     MdToolbarModule
   ],
-  declarations: [HeaderComponent, MarkdownPipe, PrettyfilePipe],
-  exports: [HeaderComponent, MarkdownPipe, PrettyfilePipe]
+  declarations: [HeaderComponent, MarkdownPipe, PrettyfilePipe, ClipboardDirective],
+  exports: [HeaderComponent, MarkdownPipe, PrettyfilePipe, ClipboardDirective]
 })
 export class SharedModule { }
