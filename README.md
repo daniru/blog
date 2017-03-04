@@ -8,7 +8,7 @@ As a prove of concept, we will connect to Firebase for authenticate and database
 
 > You can access to that blog [https://www.daniru.com](https://www.daniru.com)
 
-## Step 1
+### Step 1
 
 - Tooling 
     - Angular CLI RC.1
@@ -18,7 +18,7 @@ As a prove of concept, we will connect to Firebase for authenticate and database
 
 > Check the [code](https://github.com/daniru/blog/tree/step_1) and read the [post](https://www.daniru.com/blog/create_angular_blog_1)
 
-# Step 2
+### Step 2
 
 - Create Module
 - Create Blog Service
