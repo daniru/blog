@@ -10,6 +10,7 @@ import { ItemComponent } from './components/item/item.component';
 import { ItemHeaderComponent } from './components/item-header/item-header.component';
 import { ItemSectionComponent } from './components/item-section/item-section.component';
 import { ItemFilesComponent } from './components/item-files/item-files.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import { ItemFilesComponent } from './components/item-files/item-files.component
     SharedModule
   ],
   providers: [BlogService],
-  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent]
+  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent]
 })
 export class BlogModule { }
