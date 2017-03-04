@@ -1,3 +1,6 @@
 <div *ngIf="section?.text">
   <div id="wrapper" [innerHTML]="section.text | markdown"></div>
 </div>
+<div *ngIf="section?.files">
+  <dr-item-files [files]="section.files"></dr-item-files>
+</div>

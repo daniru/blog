@@ -1,0 +1,18 @@
+<section *ngIf="files">
+  <md-tab-group *ngIf="files.length > 1 || (files.length === 1 && files[0].name)">
+    <md-tab *ngFor="let file of files">
+      <template md-tab-label>
+        <section [class]="getClass(file)" class="filesheader">
+          <div class="path" *ngIf="file.path">{{file.path}}</div>
+          <div class="filename" *ngIf="file.name">{{file.name}}</div>
+        </section>
+      </template>
+      <section>
+        <pre class="prettyprint prettyprinted" [innerHTML]="file.content"></pre>
+      </section>
+    </md-tab>
+  </md-tab-group>
+  <section *ngIf="files.length === 1 && ! files[0].name">
+    <pre class="prettyprint prettyprinted" [innerHTML]="files[0].content"></pre>
+  </section>
+</section>

@@ -1,0 +1,44 @@
+@import "../../../../styles/_colors";
+
+md-tab-group {
+  background-color: $color50;
+  /deep/ {
+    .path {
+      color: $color700;
+      font-size: 0.7em;
+      position: absolute;
+      width: 100%;
+      text-align: left;
+      top: -12px;
+    }
+
+    .md-tab-label-active { opacity: 1; }
+    .md-tab-header { border-color: $color100; }
+
+    .filename {
+      font-size: 1em;
+      padding-top: 5px;
+    }
+
+    .file {
+
+      &.lang-html {
+        color: $green;
+      }
+      &.lang-ts {
+        color: $blue;;
+      }
+      &.lang-scss {
+        color: $purple;
+      }
+    }
+  }
+}
+
+pre {
+  font-size: 80%;
+  margin: 0;
+  overflow: auto;
+  padding: 10px 20px;
+}
+
