@@ -416,7 +416,7 @@
         "text" : "\n"
       }, {
         "files" : [ {
-          "content" : "import { Injectable } from '@angular/core';\nimport { Http } from '@angular/http';\nimport { Observable, Subject } from 'rxjs/Rx';\nimport { Blog } from '../models/blog';\n\n@Injectable()\nexport class BlogService {\n\n  private _localCache: Blog[] = [];\n  private _blogSubject: Subject<Blog[]>;\n\n  // Initialize subject and request JSON file to store in the localCache.\n  constructor(private http: Http) {\n    this._blogSubject = new Subject<Blog[]>();\n    this.http.get('./assets/data/data.json')\n      .map((res) =>  this._convertObjectToArray(res.json().blog))\n      .do((x) => {\n        this._localCache = x;\n        this._blogSubject.next(x);\n      })\n      .subscribe();\n  }\n\n  // Get blogs from the localCache or the observable\n  getBlogs(): Observable<Blog[]> {\n    return Observable.of(this._localCache)\n      .merge(this._blogSubject.asObservable())\n      .map((res) => res.reverse() );\n  }\n\n  // Get blog from the localCache or the observable\n  getBlog(key: string): Observable<Blog> {\n    const blog = this._localCache.filter(x => x.key === key);\n    const localObservable = Observable.of(blog || []);\n    return Observable.merge(localObservable, this._blogSubject.asObservable())\n       .map(res => {\n        if (res && res.length === 0) {\n          return null ;\n        } else {\n          return res.find(x => x.key === key);\n        }\n      });\n  }\n\n  // Convert object to array function\n  private _convertObjectToArray(data: any): Blog[] {\n    return Object.keys(data).map((key: string) => {\n      return <Blog>data[key];\n    });\n  }\n}\n",
+          "content" : "import { Injectable } from '@angular/core';\nimport { Http } from '@angular/http';\nimport { Observable, Subject } from 'rxjs/Rx';\nimport { Blog } from '../models/blog';\n\n@Injectable()\nexport class BlogService {\n\n  private _localCache: Blog[] = [];\n  private _blogSubject: Subject<Blog[]>;\n\n  // Initialize subject and request JSON file to store in the localCache.\n  constructor(private http: Http) {\n    this._blogSubject = new Subject<Blog[]>();\n    this.http\n      .get('./assets/data/data.json')\n      .map((res) =>  this._convertObjectToArray(res.json().blog))\n      .do((x) => {\n        this._localCache = x;\n        this._blogSubject.next(x);\n      })\n      .subscribe();\n  }\n\n  // Get blogs from the localCache or the observable\n  getBlogs(): Observable<Blog[]> {\n    return Observable.of(this._localCache)\n      .merge(this._blogSubject.asObservable())\n      .map((res) => res.reverse() );\n  }\n\n  // Get blog from the localCache or the observable\n  getBlog(key: string): Observable<Blog> {\n    const blog = this._localCache.filter(x => x.key === key);\n    const localObservable = Observable.of(blog || []);\n    return Observable\n      .merge(localObservable, this._blogSubject.asObservable())\n      .map(res => { return res && res.length === 0 ? null : res.find(x => x.key === key); });\n  }\n\n  // Convert object to array function\n  private _convertObjectToArray(data: any): Blog[] {\n    return Object.keys(data).map((key: string) => {\n      return <Blog>data[key];\n    });\n  }\n}\n",
           "name" : "blog.service.ts",
           "order" : 1,
           "path" : "app/blog/services/"
@@ -425,7 +425,7 @@
         "text" : "## Refactor Service to use JSON file\n\nWe need data that match our new interface definitions. We refactor our service to read data from a JSON file to match the same structure.\n\nI have created some sample data in a JSON file [here](https://raw.githubusercontent.com/daniru/blog/step_3/src/assets/data/data.json) that contains data exported from the firebase list that we will be using later on. So we can export/import the JSON file to work locally and remotely.  We can copy the file in **assets/data/data.json**. {.alert .alert-info}\n\nLet's have a look at the new blogService implementation."
       }, {
         "order" : 13,
-        "text" : "As the firebase list is an object with properties, we need to create a function *_convertObjectToArray* to get the keys of the objects and insert the value in an array. {.alert .alert-warning}\n\nNotice that we have added some new stuff. We read our file in the constructor, transform the data and populate the cache object. That way we only read the file once when the service is instantiated. Once we have the data ready, we emit that data in the Subject that we have created.\n\nA subject represents an object that is both an observable sequence as well as an observer. It acts as an Observer when we emit through it an event as soon as the data ready.\n\nIn the *getBlogs*, and *getBlog* methods, we get the data from the cache, and we merge with our Subject as an Observable. We do that in case that a component subscribes to the observable before we have any data in the cache object. In that case, it will receive and empty array/value when they subscribe, but as soon as we load the data from the file, they will receive the data through it.\n\nNow, the site should be displaying the header and six different titles. {.alert .alert-success}\n"
+        "text" : "As the firebase list is an object with properties, we need to create a function *_convertObjectToArray* to get the keys of the objects and insert the value in an array. {.alert .alert-warning}\n\nNotice that we have added some new stuff. We read our file in the constructor, transform the data and populate the cache object. That way we only read the file once when the service is instantiated. Once we have the data ready, we emit that data in the Subject that we have created.\n\nA subject represents an object that is both an observable sequence as well as an observer. It acts as an Observer when we emit through it an event as soon as the data ready.\n\nIn the *getBlogs*, and *getBlog* methods, we get the data from the cache, and we merge with our Subject as an Observable. We do that in case that a component subscribes to the observable before we have any data in the cache object. In that case, it will receive and empty array/value when they subscribe, but as soon as we load the data from the file, they will receive the data through it.\n\nNow, the site should be displaying the header and three different titles. {.alert .alert-success}\n"
       }, {
         "files" : [ {
           "content" : "ng g component blog/components/itemHeader",
@@ -502,7 +502,7 @@
           "order" : 1,
           "path" : "app/blog/components/item-section/"
         }, {
-          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\" [innerHTML]=\"section.text | markdown\"></div>\n</div>",
+          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\">{{section.text}}</div>\n</div>",
           "name" : "item-section.component.html",
           "order" : 2,
           "path" : "app/blog/components/item-section/"
@@ -514,22 +514,6 @@
         } ],
         "order" : 20,
         "text" : "And the code as follows:"
-      }, {
-        "files" : [ {
-          "content" : "ng g pipe shared/pipes/markdown --export",
-          "order" : 1
-        } ],
-        "order" : 21,
-        "text" : "The input text will support Markdown, so we will need to transform it. You have noticed in the previous template, we are using **| markdown** pipe, this is letting know angular to use the pipe called markdown to format the data.\n\nNotice in the SCSS what we are using /deep/. This is needed to be able to style inside to the shadow DOM. {.alert }\n\n## Custom Markdown Pipe\n\nIn the item header, we have been using the built-in pipe *date* to transform the date to the desired format. But Angular doesn't have any to transform markdown, so we will need to create a custom pipe to transform our raw markdown text.\n\nAngular provides us with the @Pipe decorator to do it. A pipe basically takes in data as input and transforms it to a desired output {.alert .alert-info}\n\nLet's create it in our shared module"
-      }, {
-        "files" : [ {
-          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\nimport * as MarkdownIt from 'markdown-it';\n\ndeclare var require: any;\nconst markdownItAttrs = require('markdown-it-attrs');\n\n@Pipe({\n  name: 'markdown'\n})\nexport class MarkdownPipe implements PipeTransform {\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(data: string): SafeHtml {\n    if (data) {\n      const md = new MarkdownIt();\n      md.use(markdownItAttrs);\n      return this.sanitizer.bypassSecurityTrustHtml(md.render(data));\n    } else {\n      return this.sanitizer.bypassSecurityTrustHtml('No Data');\n    }\n  }\n}\n",
-          "name" : "markdown.pipe",
-          "order" : 1,
-          "path" : "app/shared/pipes/"
-        } ],
-        "order" : 22,
-        "text" : "We will use two of the libraries already installed above, **markdown-it** and **markdown-it-attrs**, to transform markdown text to a normal HTML. The second library will provide the option to add classes to our markdown.\n\nIn the transform method, we receive a string, and we apply the markdown libraries to transform it to HTML code. We will need to use the Sanitizer provider from Angular to let angular know that it can trust on that raw htHTMLml.\n\nBy default angular sanitize the text to avoid XSS risks. We need to be sure that the data that we bypass is completely secure, we know the source and doesn't contain dangerous scripts {.alert .alert-danger}\n"
       }, {
         "files" : [ {
           "content" : "<div class=\"container\" *ngIf=\"blog\">\n  <md-card>\n    <md-card-header>\n      <dr-item-header [blog]=\"blog\" [headerLink]=\"false\"></dr-item-header>\n    </md-card-header> \n    <md-card-content>\n        <dr-item-section *ngFor=\"let section of blog.sections\" [section]=\"section\"></dr-item-section>\n    </md-card-content>\n  </md-card>\n</div>",
@@ -547,17 +531,38 @@
           "order" : 3,
           "path" : "app/blog/components/list-item/"
         } ],
+        "order" : 21,
+        "text" : "Notice in the SCSS what we are using /deep/. This is needed to be able to style inside to the shadow DOM. {.alert }\n\nWe will use the new component in **item.component** and **list-item.component**, the first one will display all the sections and the second only the first section. We have the code for those components here:"
+      }, {
+        "files" : [ {
+          "content" : "ng g pipe shared/pipes/markdown --export",
+          "order" : 1
+        } ],
+        "order" : 22,
+        "text" : "## Custom Markdown Pipe\n\nThe input text will support Markdown, so we will need to transform it. In the item header, we have been using the built-in pipe *date* to transform the date to the desired format. But Angular doesn't have any to transform markdown, so we will need to create a custom pipe to transform our raw markdown text.\n\nAngular provides us with the @Pipe decorator to do it. Let's create it in our shared module."
+      }, {
+        "files" : [ {
+          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\nimport * as MarkdownIt from 'markdown-it';\n\ndeclare var require: any;\nconst markdownItAttrs = require('markdown-it-attrs');\n\n@Pipe({\n  name: 'markdown'\n})\nexport class MarkdownPipe implements PipeTransform {\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(data: string): SafeHtml {\n    if (data) {\n      const md = new MarkdownIt();\n      md.use(markdownItAttrs);\n      return this.sanitizer.bypassSecurityTrustHtml(md.render(data));\n    } else {\n      return this.sanitizer.bypassSecurityTrustHtml('No Data');\n    }\n  }\n}\n",
+          "name" : "markdown.pipe",
+          "order" : 1,
+          "path" : "app/shared/pipes/"
+        } ],
         "order" : 23,
-        "text" : "We will use the new component in **item.component** and **list-item.component**, the first one will display all the sections and the second only the first section. We have the code for those components here:"
+        "text" : "We will use two of the libraries **markdown-it** and **markdown-it-attrs** to transform markdown text to a normal HTML. The first one makes the transformation itself,  the second one provides the option to add classes.\n\nIn the transform method, we receive a string, and we apply the markdown libraries to transform it to HTML code. We will need to use the Sanitizer provider from Angular to let angular know that it can trust on that raw htHTMLml.\n\nBy default angular sanitize the text to avoid XSS risks. We need to be sure that the data that we bypass is completely secure, we know the source and doesn't contain dangerous scripts {.alert .alert-danger}\n"
       }, {
         "files" : [ {
           "content" : "// ... imports\nimport { SharedModule } from '../shared/shared.module';\n\n@NgModule({\n  // ... metatada \n  imports: [\n    // ... imports\n    SharedModule\n  ]\n})\nexport class BlogModule { }\n",
           "name" : "blog.module.ts",
           "order" : 1,
           "path" : "app/blog/"
+        }, {
+          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\" [innerHTML]=\"section.text | markdown\"></div>\n</div>",
+          "name" : "item-section.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item-section/"
         } ],
         "order" : 24,
-        "text" : "Just remember, that to be able to use the pipe, we need to import the Shared Module in our BlogModule.\n"
+        "text" : "To be able to consume it from our ItemSection Component, we will need to import the Shared Module in our BlogModule, and update our ItemSection template to use it.\n"
       }, {
         "files" : [ {
           "content" : "ng g c blog/components/itemFiles",
@@ -572,7 +577,7 @@
           "order" : 1,
           "path" : "app/blog/components/item-files/"
         }, {
-          "content" : "<section *ngIf=\"files\">\n  <md-tab-group *ngIf=\"files.length > 1 || (files.length === 1 && files[0].name)\">\n    <md-tab *ngFor=\"let file of files\">\n      <template md-tab-label>\n        <section [class]=\"getClass(file)\" class=\"filesheader\">\n          <div class=\"path\" *ngIf=\"file.path\">{{file.path}}</div>\n          <div class=\"filename\" *ngIf=\"file.name\">{{file.name}}</div>\n        </section>\n      </template>\n      <section>\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content | prettyfile:file.name\"></pre>\n      </section>\n    </md-tab>\n  </md-tab-group>\n  <section *ngIf=\"files.length === 1 && ! files[0].name\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content | prettyfile:files[0].name\"></pre>\n  </section>\n</section>\n",
+          "content" : "<section *ngIf=\"files\">\n  <md-tab-group *ngIf=\"files.length > 1 || (files.length === 1 && files[0].name)\">\n    <md-tab *ngFor=\"let file of files\">\n      <template md-tab-label>\n        <section [class]=\"getClass(file)\" class=\"filesheader\">\n          <div class=\"path\" *ngIf=\"file.path\">{{file.path}}</div>\n          <div class=\"filename\" *ngIf=\"file.name\">{{file.name}}</div>\n        </section>\n      </template>\n      <section>\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content\"></pre>\n      </section>\n    </md-tab>\n  </md-tab-group>\n  <section *ngIf=\"files.length === 1 && ! files[0].name\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content\"></pre>\n  </section>\n</section>\n",
           "name" : "item-files.component.html",
           "order" : 2,
           "path" : "app/blog/components/item-files/"
@@ -604,10 +609,10 @@
           "order" : 1
         } ],
         "order" : 28,
-        "text" : "## PrettyFile pipe\n\nWe create another Pipe to make the transformation between the raw content and the styled one. It will use *google-code-prettify* library to make nicer the content of the files."
+        "text" : "## PrettyFile pipe\n\nWe need another custom Pipe to transform the raw content and a formatted one. We will use *google-code-prettify* library to make nicer the content of the files."
       }, {
         "files" : [ {
-          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\n\ndeclare var require: any;\nconst PR = require('google-code-prettify/bin/prettify.min');\n\n@Pipe({\n  name: 'prettyfile'\n})\nexport class PrettyfilePipe implements PipeTransform {\n\n  private _entityMap: any = {\n    '<': `&lt;`,\n    '>': '&gt;',\n    '\"': '&quot;',\n    '\\'': '&#39;',\n    '/': '&#x2F;',\n    '`': '&#x60;',\n    '=': '&#x3D;',\n    '&': '&amp;',\n  };\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(content: string, name: string): SafeHtml {\n    const language = this._getLanguage(name);\n    console.log('language', name);\n    let text = this._escapeHtml(content);\n\n    text = PR.prettyPrintOne(text, language, false);\n    return this.sanitizer.bypassSecurityTrustHtml(text);\n  }\n\n  private _getLanguage(name: string): string {\n    if (!name) { return ''; }\n    const split = name.split('.');\n    if (split.length <= 1) { return ''; }\n    const extension = split[split.length - 1];\n    switch (extension) {\n      case 'scss': return 'css';\n      default: return `${extension}`;\n    }\n  }\n\n  private _escapeHtml(string: string): string {\n    return String(string).replace(/[&<>\"'`=\\/]/g, (s) => this._entityMap[s] );\n  }\n}\n",
+          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\n\ndeclare var require: any;\nconst PR = require('google-code-prettify/bin/prettify.min');\n\n@Pipe({\n  name: 'prettyfile'\n})\nexport class PrettyfilePipe implements PipeTransform {\n\n  private _entityMap: any = {\n    '<': `&lt;`,\n    '>': '&gt;',\n    '\"': '&quot;',\n    '\\'': '&#39;',\n    '/': '&#x2F;',\n    '`': '&#x60;',\n    '=': '&#x3D;',\n    '&': '&amp;',\n  };\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(content: string, filename: string): SafeHtml {\n    const language = this._getLanguage(filename);\n    let text = this._escapeHtml(content);\n\n    text = PR.prettyPrintOne(text, language, false);\n    return this.sanitizer.bypassSecurityTrustHtml(text);\n  }\n\n  private _getLanguage(filename: string): string {\n    if (!filename) { return ''; }\n    const split = filename.split('.');\n    if (split.length <= 1) { return ''; }\n    const extension = split[split.length - 1];\n    switch (extension) {\n      case 'scss': return 'css';\n      default: return `${extension}`;\n    }\n  }\n\n  private _escapeHtml(string: string): string {\n    return String(string).replace(/[&<>\"'`=\\/]/g, (s) => this._entityMap[s] );\n  }\n}\n",
           "name" : "prettyfile.pipe.ts",
           "order" : 1,
           "path" : "app/shared/pipes/"
@@ -621,13 +626,22 @@
           "order" : 1
         } ],
         "order" : 30,
-        "text" : "We need to import the default styles from the *prettify* library and include them in the styles sections inside the angular/CLI configuration file.\n\nIf you want to apply a custom style, *as I did with githubv2 style*, you can download the file, add it in the styles folder and import it the same way as the prettify CSS file. There are plenty of styles to apply to prettyPrint, you can find a few [here](https://jmblog.github.io/color-themes-for-google-code-prettify/) and [here](https://github.com/daylerees/colour-schemes/tree/master/prettyprint);\n\n\n\n"
+        "text" : "We need to import the default styles from the *prettify* library and include them in the styles sections inside the angular/CLI configuration file.\n\nIf you want to apply a custom style (as I did with githubv2 style), you can download the file, add it in the styles folder and import it the same way as the prettify CSS file. There are plenty of styles to apply to prettyPrint, you can find a few [here](https://jmblog.github.io/color-themes-for-google-code-prettify/) and [here](https://github.com/daylerees/colour-schemes/tree/master/prettyprint);\n"
+      }, {
+        "files" : [ {
+          "content" : "<section *ngIf=\"files\">\n  <md-tab-group *ngIf=\"files.length > 1 || (files.length === 1 && files[0].name)\">\n    <md-tab *ngFor=\"let file of files\">\n      <template md-tab-label>\n        <section [class]=\"getClass(file)\" class=\"filesheader\">\n          <div class=\"path\" *ngIf=\"file.path\">{{file.path}}</div>\n          <div class=\"filename\" *ngIf=\"file.name\">{{file.name}}</div>\n        </section>\n      </template>\n      <section>\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content | prettyfile:file.name\"></pre>\n      </section>\n    </md-tab>\n  </md-tab-group>\n  <section *ngIf=\"files.length === 1 && ! files[0].name\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content | prettyfile:files[0].name\"></pre>\n  </section>\n</section>\n",
+          "name" : "item-files.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item-files/"
+        } ],
+        "order" : 31,
+        "text" : "We are ready to use the pipe in the FilesTemplate."
       }, {
         "files" : [ {
           "content" : "ng g d shared/directives/clipboard --export",
           "order" : 1
         } ],
-        "order" : 31,
+        "order" : 32,
         "text" : "## Clipboard Directive\n\nWe want to offer the user a quick way to copy the content of our files.  We are going to create a directive called clipboard, as we need some interaction with the DOM."
       }, {
         "files" : [ {
@@ -636,7 +650,7 @@
           "order" : 1,
           "path" : "app/shared/directives/"
         } ],
-        "order" : 32,
+        "order" : 33,
         "text" : "In the directive, we create two **@HostListener()** to listen when the mouse enters or leaves the element.\n\nWhen the mouse first enters, we will create a button, and after that, we will be hiding or showing it when we leave or enter the elements. \n\nWhen we click on the button, we will copy the content of the file to the clipboard thanks to the clipboard library."
       }, {
         "files" : [ {
@@ -650,14 +664,14 @@
           "order" : 2,
           "path" : "app/blog/components/item-files/"
         } ],
-        "order" : 33,
+        "order" : 34,
         "text" : "We will use it in the blog-file components, so we will modify our blog-files template, to add the directive and add some CSS to show the button in the top right corner of the box."
       }, {
         "files" : [ {
           "content" : "ng g c blog/components/pagination",
           "order" : 1
         } ],
-        "order" : 34,
+        "order" : 35,
         "text" : "## Pagination\n\nBefore finish the article, we have notice that we have been created a few blogs testing, and the list page has grown too big. So it is a good idea to implement pagination. "
       }, {
         "files" : [ {
@@ -676,7 +690,7 @@
           "order" : 3,
           "path" : "app/blog/components/pagination/"
         } ],
-        "order" : 35,
+        "order" : 36,
         "text" : "Our component will display the selector page. It will take two input (current page and an array of available pages) and one output event to notify the parent the new page.\n\nWe are going to use a couple of new object from angular, **@Output** and **EventEmitter**. Those allow us to communicate with the parent emitting events sending information. There parent will execute the function assigned to the event **(pageChange)=\"doSomething($event)\"**.\n\nHere is our implementation of the component."
       }, {
         "files" : [ {
@@ -695,11 +709,11 @@
           "order" : 3,
           "path" : " app/blog/list/"
         } ],
-        "order" : 36,
-        "text" : "We need to modify our BlogService and  BlogComponent.\n\nIn the service, we need three private properties that will contain the number of blogs that we have, the current page and how many pages we display by page.  We implement a new *setPage* method to set the current page, and two public getters so read the current page, and an array of pages numbers *(we return an array to use straight away in the ngFor)*.\n\nThe *getBlogs* method will store the number of blogs, and we will slice the array to get the selected blogs.\n\nIn the BlogComponent, we will add our new component in the template, and we will add a new function in the component that will be called when the pagination component emits a changePage. It that case, we will set the page in the service, and when we apply next to the blogSubject, we will emit the values to the subscriber, our blogComponent, and it will update the list with the new values."
-      }, {
         "order" : 37,
-        "text" : "## Conclusion\n\nWe started with a very basic app that showed only titles, and we are finishing with a styled blog.\nWe have been using a few new component from angular (pipes, directives, output, eventEmitter, ...), adding styles thanks to @angular/material, integrating a few libraries (markdown, prettify, clipboard), and finally adding pagination.\n\nWe have a nice view mode of the blog fetching data locally. In the following post, we will integrate the blog with external sources, adding authentication and storage with Firebase."
+        "text" : "We need to modify our BlogService and  BlogComponent.\n\nIn the service, we create three new private properties that will contain the number of blogs that we have, the current page and how many posts we display by page.  We implement a new *setPage* method to set the current page, and two public getters so read the current page, and an array of pages numbers *(we return an array to use straight away in the ngFor)*.\n\nThe *getBlogs* method will store the number of blogs, and we will slice the array to get the selected blogs.\n\nIn the BlogComponent, we will add our new component in the template, and we will add a new function in the component that will be called when the pagination component emits a changePage. It that case, we will set the page in the service, and when we apply next to the blogSubject, we will emit the values to the subscriber, our blogComponent, and it will update the list with the new values."
+      }, {
+        "order" : 38,
+        "text" : "## Conclusion\n\nWe started with a very basic application that showed only titles, and we are finishing with a styled blog.\nWe have been using a few new component from angular (pipes, directives, output, eventEmitter, ...), adding styles thanks to @angular/material, integrating a few libraries (markdown, prettify, clipboard), and finally adding pagination.\n\nWe have a nice blog fetching data locally. In the following post, we will integrate the blog with external sources, adding authentication and storage with Firebase."
       } ],
       "title" : "Extending models and adding styles"
     }
