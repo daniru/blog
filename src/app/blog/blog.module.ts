@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdCardModule, MdButtonModule } from '@angular/material';
 import { BlogRoutingModule } from './blog-routing.module';
+import { SharedModule } from '../shared/shared.module';
 import { BlogService } from './services/blog.service';
 import { ListComponent } from './components/list/list.component';
 import { ListItemComponent } from './components/list-item/list-item.component';
@@ -13,7 +14,8 @@ import { ItemSectionComponent } from './components/item-section/item-section.com
   imports: [
     CommonModule,
     BlogRoutingModule,
-    MdCardModule, MdButtonModule
+    MdCardModule, MdButtonModule,
+    SharedModule
   ],
   providers: [BlogService],
   declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent]

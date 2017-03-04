@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule} from '@angular/router';
 import { MdToolbarModule } from '@angular/material';
 import { HeaderComponent } from './components/header/header.component';
+import { MarkdownPipe } from './pipes/markdown.pipe';
 
 @NgModule({
   imports: [
@@ -10,7 +11,7 @@ import { HeaderComponent } from './components/header/header.component';
     RouterModule,
     MdToolbarModule
   ],
-  declarations: [HeaderComponent],
-  exports: [HeaderComponent]
+  declarations: [HeaderComponent, MarkdownPipe],
+  exports: [HeaderComponent, MarkdownPipe]
 })
 export class SharedModule { }
