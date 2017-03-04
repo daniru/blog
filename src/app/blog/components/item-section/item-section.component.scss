@@ -1,0 +1,73 @@
+@import '../../../../styles/_colors';
+
+:host {
+  font-size: 17px;
+  text-align: justify;
+
+  /deep/ {
+
+    blockquote,
+    .alert {
+      background: $gray-lightest;
+      border-left: 4px solid $gray-light;
+      border-width: 0 0 0 5px;
+      color: $gray-light;
+      margin: 10px 0 10px 0;
+      padding: 15px;
+      &.alert-primary {   border-color: $blue;        background-color: lighten($blue, 40%); }
+      &.alert-success {   border-color: $green;       background-color: lighten($green, 40%); }
+      &.alert-info {      border-color: $gray-light;  background: $gray-lightest; }
+      &.alert-warning {   border-color: $orange;      background-color: lighten($orange, 30%);  }
+      &.alert-danger {    border-color: $red;         background-color: lighten($red, 30%); }
+      &.alert-inverse {   border-color: $gray-dark;   background-color: lighten($gray-dark, 40%); }
+      &.alert-secondary { border-color: $gray-light;  background: $gray-lightest; }
+    }
+
+    h2 {
+      border-bottom: 1px solid $colorA100;
+      font-size: 25px;
+      margin: 30px 0;
+      opacity: .7;
+      padding: 5px 0;
+    }
+
+    h3 {
+      font-size: 22px;
+      margin: 30px 0;
+      opacity: .6;
+      padding: 5px 0;
+    }
+
+    code {
+      background: $white;
+      border: 1px solid $gray-lighter;
+      display: block;
+      font-size: 12px;
+      padding: 10px;
+    }
+
+    table {
+      background: $table-background;
+      margin-bottom: 1rem;
+      max-width: 100%;
+      width: 100%;
+
+      th,
+      td {
+        border-bottom: 1px solid $table-border-color;
+        margin-bottom: 1rem;
+        padding: .74rem;
+        vertical-align: top;
+      }
+
+      thead th {
+        border-bottom: 2px solid $table-border-color;
+        vertical-align: bottom;
+      }
+
+      tbody + tbody {
+        border-top: 2px solid $table-border-color;
+      }
+    }
+  }
+}
