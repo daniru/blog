@@ -20,6 +20,8 @@
       "prefix": "dr",
       "styles": [
         "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/google-code-prettify/bin/prettify.min.css",
+        "./styles/github-v2.min.css",
         "styles.scss"
       ],
       "scripts": [],

@@ -8,11 +8,11 @@
         </section>
       </template>
       <section>
-        <pre class="prettyprint prettyprinted" [innerHTML]="file.content"></pre>
+        <pre class="prettyprint prettyprinted" [innerHTML]="file.content | prettyfile:file.name"></pre>
       </section>
     </md-tab>
   </md-tab-group>
   <section *ngIf="files.length === 1 && ! files[0].name">
-    <pre class="prettyprint prettyprinted" [innerHTML]="files[0].content"></pre>
+    <pre class="prettyprint prettyprinted" [innerHTML]="files[0].content | prettyfile:files[0].name"></pre>
   </section>
 </section>

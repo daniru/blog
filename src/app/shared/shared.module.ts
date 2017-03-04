@@ -4,6 +4,7 @@ import { RouterModule} from '@angular/router';
 import { MdToolbarModule } from '@angular/material';
 import { HeaderComponent } from './components/header/header.component';
 import { MarkdownPipe } from './pipes/markdown.pipe';
+import { PrettyfilePipe } from './pipes/prettyfile.pipe';
 
 @NgModule({
   imports: [
@@ -11,7 +12,7 @@ import { MarkdownPipe } from './pipes/markdown.pipe';
     RouterModule,
     MdToolbarModule
   ],
-  declarations: [HeaderComponent, MarkdownPipe],
-  exports: [HeaderComponent, MarkdownPipe]
+  declarations: [HeaderComponent, MarkdownPipe, PrettyfilePipe],
+  exports: [HeaderComponent, MarkdownPipe, PrettyfilePipe]
 })
 export class SharedModule { }
