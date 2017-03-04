@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./styles/_colors";
+@import "./styles/_material.overwrites";
+@import "./styles/_preloader";
+
+body, html {
+  background-color: $background;
+  color: $color;
+  margin: 0;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1140px;
+  position: relative;
+}
+
+a {
+  color: $colorA200;
+  text-decoration: none;
+  &:hover { color: $color600; }
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.full-width,
+.full-size {
+  width: 100%;
+}
+
+* {
+  outline: 0;
+}
+

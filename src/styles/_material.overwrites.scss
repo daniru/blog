@@ -1,0 +1,50 @@
+@import '~@angular/material/core/theming/all-theme';
+@import "./_colors";
+
+@include mat-core();
+$mat-daniru: (
+  50:   $color50,
+  100:  $color100,
+  200:  $color200,
+  300:  $color300,
+  400:  $color400,
+  500:  $color500,
+  600:  $color600,
+  700:  $color700,
+  800:  $color800,
+  900:  $color900,
+  A100: $colorA100,
+  A200: $colorA200,
+  A400: $colorA400,
+  A700: $colorA700,
+  contrast: (
+    50: $black-87-opacity,
+    100: $black-87-opacity,
+    200: $black-87-opacity,
+    300: $black-87-opacity,
+    400: $black-87-opacity,
+    500: white,
+    600: white,
+    700: white,
+    800: $white-87-opacity,
+    900: $white-87-opacity,
+    A100: $black-87-opacity,
+    A200: $black-87-opacity,
+    A400: $black-87-opacity,
+    A700: $black-87-opacity,
+  )
+);
+
+$app-primary: mat-palette($mat-daniru, 500);
+$app-accent:  mat-palette($mat-blue, 100, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$app-warn:  mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($app-theme);

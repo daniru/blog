@@ -1,0 +1,721 @@
+{
+  "blog" : {
+    "-KW-TGzzsslUqKutvC3r" : {
+      "date_created" : "2017-02-09 01:01:08",
+      "date_published" : "2017-03-03T03:00:00.000Z",
+      "header" : "Create your angular blog (1)",
+      "key" : "create_angular_blog_1",
+      "sections" : [ {
+        "order" : 1,
+        "text" : "This article is part of a series that takes you through the steps of creating your own blog using Angular and TypeScript. They will cover the core fundamentals of angular at the same time that we are building our data-driven application. We will be displaying the list of blog post and a post itself, we will be able to edit them using Reactive Forms, store them in a database (firebase) and navigate among those components. We will be hosting the blog in Github Pages.\n\nThis is the first part, where are going to set up the application. We will install and use @angular/cli as a main tool to create the application. We will run the application locally and create a github repository to push the application to a remote branch. Finally, we will build and deploy it to GitHubPages.\n"
+      }, {
+        "order" : 2,
+        "text" : "Although previous knowledge of angular is not needed to follow those articles, it is highly recommended to have a look at [Tour of Heroes](https://angular.io/docs/ts/latest/tutorial/) before start, to be familiar with the core fundamentals of angular. {.alert .alert-secondary} "
+      }, {
+        "files" : [ {
+          "content" : "npm install -g @angular/cli\n",
+          "order" : 1
+        } ],
+        "order" : 3,
+        "text" : "## Tooling \n\nDuring the course of that tutorial, we will be using [Angular CLI](https://cli.angular.io/)  to create, build and serve locally the site. If you have not got it installed,  you can do so using NPM:\n\nFor that tutorial we are going to use version 1.0.0-RC.1 {.alert .alert-info}\n"
+      }, {
+        "files" : [ {
+          "content" : "ng new blog --style=scss --routing --prefix=dr --ng4\n",
+          "order" : 1
+        } ],
+        "order" : 4,
+        "text" : "## Creating Your Angular Application\n\nNow, that we have angularCLI installed,  creating a new angular application is easy. We just type the following line in the console and our application will be created with the basic structure and download all the dependencies that it needs. "
+      }, {
+        "order" : 5,
+        "text" : "We have added a few flags:\n\n- **--style=scss**: defaults the project to use SCSS.\n- **--routing**: adds the basic routing module in the project \n- **--prefix=dr**: sets our prefix for the components.\n- **--ng4**: let's play with angular v4.\n"
+      }, {
+        "files" : [ {
+          "content" : "ng serve",
+          "order" : 1
+        } ],
+        "order" : 6,
+        "text" : "Having a look what it has created. I have listed the most relevant files.\n\n| Path | File/**Folder** | Desc |\n|---|---|---|\n| / | .angular-cli.json | Angular cli config file |\n| / | karma.conf.js | Karma config file |\n| / | package.json | NPM config file |  \n| / | protactor.conf.js | e2e config file |\n| / | ts-config.json | Typescript config file |\n| / | tslint.json | Lint config file  |\n| / | **e2e** | End-to-end test folder |\n| / | **node_modules** | Packages library folder |\n| / | **src**  | Folder where we will find the app source code. |\n| /src/ | index.html | Entry point of the website where we declare the entry component **<dr-root>** |\n| /src/ | main.ts | Entry point of the angular app, where we bootstrap the application.  |\n| /src/ | styles.scss | Main styles of the app. |\n| /src/ | **assets** | Folder where we will add our assets, that folder will be copied to our prod folder. |\n| /src/ | **environments** | Folder where we will store the configurations for each environments. |\n| /src/ | **app** | Forder where our app lives. |\n| /src/app/ | app-routing.module.ts |  Main routing of our app. |\n| /src/app/ | app.module.ts | Main module of the app. We import the and bootstrap here the app component. |\n| /src/app/ | app.components.ts | Main component of the app. |\n| /src/app/ | app.components.html | Template for the app.component |\n| /src/app/ | app.components.scss | Styles for the app.component |\n| /src/app/ | app.components.spec.ts | Unit test for the app component. |\n\n\nNow, that we have looked inside the App, let's boot up it  to see if it really works, just type:"
+      }, {
+        "order" : 7,
+        "text" : "This command will keep the app transpiling and running, watching for any changes in our source code while we continue to build the blog.\n\nNow, we navigate to [http://localhost:4200](http://localhost:4200). \n\ndr works! {.alert .alert-success}\n\n\n"
+      }, {
+        "files" : [ {
+          "content" : "git init\ngit commit -a  -m \"first commit\"\ngit remote add origin ''yourlinkrepository''\ngit push -u origin master",
+          "order" : 1
+        } ],
+        "order" : 8,
+        "text" : "## Adding to Github repository\n\nNow that we have the app working locally, let's push it to a public repository.\n\nWe need to create our own public repository in [Github](https://github.com/new) and follow the instructions that should be similar to those:"
+      }, {
+        "files" : [ {
+          "content" : "npm i -g angular-cli-ghpages",
+          "order" : 1
+        } ],
+        "order" : 9,
+        "text" : "## Github pages\n\nGithub allows you to host your projects directly from your repositories. It looks for the compiled code of the website in the *gh-pages* branch by default. \n\nThere is a special case when the repository is called username.github.io (main page), then Github gets the code from master. More information [here](https://help.github.com/categories/github-pages-basics/) {.alert}\n\nTo be able to display our website, we need to deploy the built code in that *gh-branch* in our repository. We will install **angular-cli-ghpages** to help us with the deployment.\n"
+      }, {
+        "files" : [ {
+          "content" : "  \"scripts\": {\n    ....\n    \"ghp\": \"ng build --prod --bh /blog/ && copy dist\\\\index.html dist\\\\404.html && ngh\"\n  },",
+          "name" : "package.json",
+          "order" : 1
+        } ],
+        "order" : 10,
+        "text" : "We need to do three steps to be able to deploy our app:\n| Action | Command | Description |\n|---|---|---|\n| Build  | ng build --prod --bh /reponame/ | Build our app in prod mode. We need to specify where to find the files in base href, as they will be in our repository folders instead of the root. |\n| Copy |  copy dist\\\\index.html dist\\\\404.html | SPA are not supported by default, github will try to find our angular router unsuccessfully and redirect us to 404.html. Copying our index.html to 404.html will fix the problem.  |\n| Deploy | ngh | Deploy our build code to GitGub pages branch |\n\nTo make it easier, we will add a new script in package.json to do it for us anytime."
+      }, {
+        "order" : 11,
+        "text" : "Now, we can execute any time\n\n```\nnpm run ghp\n```\n\nIn a few seconds, you should be able to see your code running in githubpages in https://yourgithubusername.github.io/yourrepository.\n"
+      }, {
+        "files" : [ {
+          "content" : "mkdir yourgithubusername.github.io\ncd yourgithubusername.github.io",
+          "order" : 1
+        } ],
+        "order" : 12,
+        "text" : "## Display your repository in the root\n\nThis section may be not relevant to you if you have more projects or you don't want your blog as default page. {.alert .alert-danger }\n\nIdeally we want our users only type the root url **username.github.io**, instead **username.github.io/repositoryname**.\n\nusername.github.io repository reads the github page code from master. This lets us in the awkward position that we cannot have our source code and build code in master. So we need to have the code in other repository and publish to our gh-pages branch in the repository, as we have now.\n\nAn easy workaround is setup our basic main website **username.github.io** to redirect to our repository.\n\nLet's create a new folder with only one file."
+      }, {
+        "files" : [ {
+          "content" : "<html>\n  <head>\n    <meta http-equiv=\"refresh\" content=\"0; URL='https://daniru.github.io/blog'\" />\n  </head>\n  <body>\n\n  </body>\n</html>",
+          "name" : "index.html",
+          "order" : 1
+        } ],
+        "order" : 13,
+        "text" : "Let's create a file index.html"
+      }, {
+        "order" : 14,
+        "text" : "Now we need to create the homepage repository, which is the same as above - go to the [link](https://github.com/new) and follow the instructions with the repository **yourgithubusername.github.io**.\n\nIn a few seconds, you should be able to navigate to https://yourgithubusername.github.io and see your app working.\n\n\nGithub provides you with the option to add a custom domain instead of username.github.io.\nYou can follow the instructions [here](https://help.github.com/articles/using-a-custom-domain-with-github-pages/) {.alert .alert-info} \n\n## Conclusion\n\nNow, we have our angular application published in our main domain in Github pages.\n\nYou can check the code at that point in [github](https://github.com/daniru/blog/tree/step_1). {.alert .alert-success}\n\nIn the next post, we will create the basic structure of the blog. We will define the basic components and set up the routing."
+      } ],
+      "title" : "Set up and tooling"
+    },
+    "-KW-U1bptyI7YgUnfd1B" : {
+      "date_created" : "2017-02-08 01:01:07",
+      "date_published" : "2017-03-03T02:00:00.000Z",
+      "header" : "Create your angular blog (2)",
+      "key" : "create_angular_blog_2",
+      "sections" : [ {
+        "order" : 1,
+        "text" : "This article is part of a series that takes you through the steps of creating your own blog using Angular and TypeScript. They will cover the core fundamentals of angular at the same time that we are building our data-driven application. We will be displaying the list of blog post and a post itself, we will be able to edit them using Reactive Forms, store them in a database (firebase) and navigate among those components. We will be hosting the blog in Github Pages.\n\nThis is the second part, where we are going to create the structure of the blog, the list and the item views and how to navigate between them. We will be using the basic angular components, such as services, interfaces, components, modules and routing and how they fit together. \n"
+      }, {
+        "order" : 2,
+        "text" : "If you get lost at any moment, you can see the source code of the blog [here](https://github.com/daniru/blog/tree/step_2). {.alert .alert-success}\n"
+      }, {
+        "files" : [ {
+          "content" : "ng g module blog --routing\n",
+          "order" : 1
+        } ],
+        "order" : 3,
+        "text" : "\n## Blog module\n\nWe start creating a module where we will be adding all the components, services, directives and logic related with our blog.\n\nType this in the console to create out **blog** module:"
+      }, {
+        "order" : 4,
+        "text" : "**--routing** flag adds route functionality to the module. {.alert .alert-info}\n\nBefore we continue with the component implementation, we are going to handle the data first."
+      }, {
+        "files" : [ {
+          "content" : "ng g service blog/services/blog.service\nng g interface blog/models/blog",
+          "order" : 1
+        } ],
+        "order" : 5,
+        "text" : "## Provide Data Through a Service\n\nWe want to manage all the data from a unique place, centralizing all the logic in a single and reusable service. We create the **BlogService** for that purpose. \n\nThanks to Typescript, we can take advantage of the types. It will make us to code faster and with fewer errors thanks to the static verification of the code from the IDE. We will create an interface called **Blog**, that will contain all the properties that we will need. \n\nLet's create them."
+      }, {
+        "files" : [ {
+          "content" : "import { Injectable } from '@angular/core';\nimport { Observable } from 'rxjs/Observable';\nimport { Blog } from '../models/blog';\nimport 'rxjs/Rx';\n\n@Injectable()\nexport class BlogService {\n\n  // we keep the blogs in memory\n  private _blogs: Blog[];\n\n  // We populate the mock data in the constructor\n  constructor() {\n    this._blogs = [\n      { key: 'blog_1', title: 'Blog 1' },\n      { key: 'blog_2', title: 'Blog 2' }\n    ];\n  }\n\n  // method to get all blogs\n  getBlogs(): Observable<Blog[]> {\n    return Observable.of(this._blogs);\n  }\n\n  // method to get on blog by key\n  getBlog(key: string): Observable<Blog> {\n    return Observable.of(this._blogs.find(x => x.key === key));\n  }\n}",
+          "name" : "blog.service.ts",
+          "order" : 1,
+          "path" : "app/home/services/"
+        }, {
+          "content" : "export interface Blog {\n    key: string;\n    title: string;\n}",
+          "name" : "blog.ts",
+          "order" : 2,
+          "path" : "app/home/models/"
+        } ],
+        "order" : 6,
+        "text" : "Angular provides us with the **@Injectable()** decorator, that will help Angular to find the class to inject that service in any place in our application. \n\nWe create an array of blogs in the constructor. *(we will fetch the data from external sources, but let's start with something simple)*. We add two methods to fetch data, one to get all the blogs and another to get a blog by key."
+      }, {
+        "files" : [ {
+          "content" : "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nimport { BlogRoutingModule } from './blog-routing.module';\nimport { BlogService } from './services/blog.service';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    BlogRoutingModule\n  ],\n  providers: [BlogService],\n  declarations: []\n})\nexport class BlogModule { }\n",
+          "name" : "blog.module.ts",
+          "order" : 1,
+          "path" : "app/blog/"
+        } ],
+        "order" : 7,
+        "text" : "Notice in the code above that we are not returning static objects, instead we will be returning observables to handle future asynchronous calls.\n\nYou can read more about observables [here](http://reactivex.io/intro.html). {.alert .alert-info}\n\nWe're ready to use the service. To teach the dependency injector how to find and create the service, we need to register it as a provider. We will do that by importing the service and adding it as a provider in the module declaration.\n\n> Note that injects the service in a module makes it available, as a singleton, to any component in the module or modules that import it. You can avoid that adding the provider to the component *blog.component* instead of the *blog.module*, so it will be a local instance for that component and its sub-component tree.\n>\n>          @Component(\n>          ....\n>            providers: [ ourService ]\n>          }     "
+      }, {
+        "files" : [ {
+          "content" : "ng g component blog/components/list",
+          "order" : 1
+        } ],
+        "order" : 8,
+        "text" : "## List Component\n\nWe need a component to display our list of blogs. Let's start creating it."
+      }, {
+        "files" : [ {
+          "content" : "import { Component, OnInit, OnDestroy } from '@angular/core';\nimport { Subscription } from 'rxjs/Subscription';\nimport { BlogService } from '../../services/blog.service';\nimport { Blog } from '../../models/blog';\n\n@Component({\n  selector: 'dr-list',\n  templateUrl: './list.component.html',\n  styleUrls: ['./list.component.scss']\n})\nexport class ListComponent implements OnInit, OnDestroy {\n\n  // list of blogs in the view\n  public list: Blog[];\n  private _blogSubscription: Subscription;\n\n  // injecting blogService in the components\n  constructor(public blogService: BlogService) { }\n\n  // populating the initial data in the inizialiazation of the component\n  ngOnInit() {\n     this._blogSubscription = this.blogService.getBlogs().subscribe(items => { this.list = items; });\n  }\n\n  ngOnDestroy() {\n    if (this._blogSubscription) { this._blogSubscription.unsubscribe(); }\n  }\n}\n",
+          "name" : "list.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/list/"
+        } ],
+        "order" : 9,
+        "text" : "Each time that we create a component via angularCLI, it will create 4 files (the **.ts** file, where the logic lives, **.html** the external template, **.scss** the external styles and the **spec.ts** unit test files) automatically for us, link them and include in the parent module as a declaration. {.alert .alert-success}\n\n\n\nThe component will fetch the data from our brand new service. To be able to use it, we need to add our service in the constructor specifying the Type **BlogService**, and Angular, thanks to its dependency injection, will automatically assign the instance of service in our variable. Awesome!!! \n\n> Adding **private**, or **public** in the constructor parameter makes the scope of the variable global for the class. So we can use it in any part of the class using *this*.\n>\n>       constructor(public dummy: string) {}\n>\n> is the same than\n>\n>     public dummy: string;\n>     constructor(dummy: string) {\n>          this.dummy = dummy;\n>     }\n\nLet's have a look to the code of the component."
+      }, {
+        "files" : [ {
+          "content" : "<div *ngFor=\"let item of list\">\n  <dr-list-item [blog]=\"item\"></dr-list-item>\n</div>",
+          "name" : "list.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/list/"
+        } ],
+        "order" : 10,
+        "text" : "When the component initialises, we use the blog service to get the data. We call the method *getBlogs* and subscribe to the observable that it returns, and each time that we receive a response from the service we will populate our list of blogs.\n\nIn the ngOnDestroy function, we will unsubscribe from the observable, so we won't duplicate calls if we subscribe again when we navigate away and come back to the component.\n\nNotice that our class is implementing the OnInit and OnDestroy interfaces. This forces us to implement the ngOnInit and ngOnDestroy functions that they will be called automatically once when the component is created and destroyed. Learn more about the different LifeCycle hooks [here](https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html). {.alert .alert-info}\n\nWe want to display the data in the template, where we have access to any public property and function from the component. Angular provides a built-in directive **ngFor** to perform iterations. In our example, we will render a new *dr-list-item* component for each item in the list and bind the item to the blog property.\n\nThe syntax to bind properties in angular is **[nameProperty]=\"objectWithValue\"**. {.alert .alert-info}\n\n"
+      }, {
+        "files" : [ {
+          "content" : "ng g component blog/components/listItem",
+          "order" : 1
+        } ],
+        "order" : 11,
+        "text" : "## List Item Component\n\nWe need to create a new component to display the list-item information.\n"
+      }, {
+        "files" : [ {
+          "content" : "import { Component, Input } from '@angular/core';\nimport { Blog } from '../../models/blog';\n\n@Component({\n  selector: 'dr-list-item',\n  templateUrl: './list-item.component.html',\n  styleUrls: ['./list-item.component.scss']\n})\nexport class ListItemComponent{\n\n  @Input() blog: Blog;\n\n}\n",
+          "name" : "list-item.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/list-item/"
+        }, {
+          "content" : "{{blog.title}}",
+          "name" : "list-item.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/list-item/"
+        } ],
+        "order" : 12,
+        "text" : "We begin by importing the Input decoration. As we saw in the previous section, we have a property bound to our component. Inside the class, we declare *blog* property of type Blog, annotating it with the **@Input** decorator. This indicates angular to populate the value with the data in the attribute with the same name.\n\n> It is recommended to match the property and attribute names, but if it is not possible we can indicate the name as a parameter.\n>\n>      <dr-list-item [data]=\"item\"></dr-list-item>\n>      ...\n>      @input('data') blog; \n\nWe will just show the title of the blog in the template."
+      }, {
+        "files" : [ {
+          "content" : "<h1>\n  {{title}}\n</h1>\n<router-outlet></router-outlet>\n",
+          "name" : "app.component.html",
+          "order" : 1,
+          "path" : "app/"
+        }, {
+          "content" : "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule],\n  providers: []\n})\nexport class AppRoutingModule { }\n",
+          "name" : "app-routing.module.ts",
+          "order" : 2,
+          "path" : "app/"
+        }, {
+          "content" : "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\nimport { ListComponent } from './components/list/list.component';\n\nconst routes: Routes = [\n  { path: '', component: ListComponent }\n];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule],\n  providers: []\n})\nexport class BlogRoutingModule { }\n",
+          "name" : "blog-routing.module.ts",
+          "order" : 3,
+          "path" : "app/blog/"
+        }, {
+          "content" : "import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\nimport { HttpModule } from '@angular/http';\n\nimport { BlogModule } from './blog/blog.module';\nimport { AppRoutingModule } from './app-routing.module';\nimport { AppComponent } from './app.component';\n\n@NgModule({\n  declarations: [\n    AppComponent\n  ],\n  imports: [\n    BrowserModule,\n    FormsModule,\n    HttpModule,\n    AppRoutingModule,\n    BlogModule\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\nexport class AppModule { }\n",
+          "name" : "app.module.ts",
+          "order" : 4,
+          "path" : "app/"
+        } ],
+        "order" : 13,
+        "text" : "## Configuring the Router\n\nIf we execute the app now, we still have our *dr works!*. We are not loading any route information in the application. We need to configure the router.  Let's check the following points\n\n- The *app.component* template has **<router-outlet></router-outlet>** component to display the current view.\n- We remove all the routes from the *app-routing.module*, so we can delegate to the navigation to each imported module.\n- We add the default route in the *blog-routing.module*, that calls our *home component*.\n- And we import the *blog.module* into our *app.module*.\n\nLet's have a look those files:\n\n"
+      }, {
+        "order" : 14,
+        "text" : "Now, we execute again **ng serve**, and the web should be displaying the list of blogs.\n\n>     dr works! \n>     Blog 1\n>     Blog 2\n\n\nIf you get the error\n**EXCEPTION: No provider for BlogService!**\nremember to add the service as provider in the BlogModule or BlogComponent. {.alert .alert-danger}\n"
+      }, {
+        "files" : [ {
+          "content" : "ng g component blog/components/item",
+          "order" : 1
+        } ],
+        "order" : 15,
+        "text" : "## Item Component\n\nWe have the list component working. Next step is to create a new component to display the full blog.  We will call it *item*.\n"
+      }, {
+        "files" : [ {
+          "content" : "import { Component, OnInit, OnDestroy } from '@angular/core';\nimport { ActivatedRoute, Params, Router } from '@angular/router';\nimport { Subscription } from 'rxjs/Subscription';\nimport { BlogService } from '../../services/blog.service';\nimport { Blog } from '../../models/blog';\n\n@Component({\n  selector: 'dr-item',\n  templateUrl: './item.component.html',\n  styleUrls: ['./item.component.scss']\n})\nexport class ItemComponent implements OnInit, OnDestroy {\n\n  public blog: Blog;\n  private _blogSubscription: Subscription;\n\n  constructor(public route: ActivatedRoute, public router: Router, public blogService: BlogService) { }\n\n  ngOnInit() {\n    this.route.params.forEach((params: Params) => {\n      const key = params['key'];\n      this.blogService.getBlog(key).subscribe((data: any) => {\n          if (data) {\n            this.blog = data;\n          } else if (data === undefined) {\n            this.router.navigate(['/']);\n          }\n        });\n    });\n  }\n\n  ngOnDestroy() {\n    if (this._blogSubscription) { this._blogSubscription.unsubscribe(); }\n  }\n}\n",
+          "name" : "item.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/item/"
+        }, {
+          "content" : "<div>\nTitle: {{blog?.title}}\n</div>",
+          "name" : "item.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item/"
+        } ],
+        "order" : 16,
+        "text" : "We inject the ActivateRoute in the constructor to get the information of the current route. In our ngOnInit function, we find the **key** param from the current route and use it to subscribe to our service to get the data. If we don't find the data, we redirect to the index page using the router.\n\nIn the template, we will display the title of the blog."
+      }, {
+        "order" : 17,
+        "text" : "Notice the ? operator in the template. It is a null check that evaluates the first operand, if that's is null, stop, otherwise, evaluates the second operand. This is every useful to avoid \"Cannot read property 'text' of undefined\" exception in case that the template is loaded before the data. {.alert .alert-info}"
+      }, {
+        "files" : [ {
+          "content" : "<a [routerLink]=\"blog.key\">{{blog.title}}</a>",
+          "name" : "list-item.component.html",
+          "order" : 1,
+          "path" : "app/home/components/list-item/"
+        }, {
+          "content" : "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\nimport { ListComponent } from './components/list/list.component';\nimport { ItemComponent } from './components/item/item.component';\n\nconst routes: Routes = [\n  { path: '', component: ListComponent },\n  { path: ':key', component: ItemComponent }\n];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule],\n  providers: []\n})\nexport class BlogRoutingModule { }\n",
+          "name" : "blog-routing.module.ts",
+          "order" : 2,
+          "path" : "app/blog/"
+        } ],
+        "order" : 18,
+        "text" : "## Link all together\n\nNow that we have all the components in place, let's link them together.\nWe are going to add a new route to that blog item in the **blog-routing.module**, and update the list-item template to add links instead of the title.\n\nAngular Router provides with the directive **routerLink** that gives controls to the router to assign the URL given the routing path, in our case the key of the blog.\n\nNote that the param name **key** in the route is the same in both places, when we search the param in the active route and when we declare the route. {.alert .alert-info}"
+      }, {
+        "files" : [ {
+          "content" : "ng g module shared\nng g component shared\\components\\header --export",
+          "order" : 1
+        } ],
+        "order" : 19,
+        "text" : "Now, we have the links working to our view pages. We need a way to return from the item view to the list view.\n\nWe create a new component inside a new module called Shared. We will add in that module any component used by app.component or common for different modules.\n\nEach component can be only declared once in our application. To share a component, we will need to declare and export that component in its module, and import that module in the ones that need it. {.alert .alert-danger}\n\nWe type:"
+      }, {
+        "files" : [ {
+          "content" : "<a routerLink=\"/\">Home</a>",
+          "name" : "header.component.html",
+          "order" : 1,
+          "path" : "app/shared/components/header/"
+        }, {
+          "content" : "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { RouterModule } from '@angular/router';\nimport { HeaderComponent } from './header/header.component';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    RouterModule\n  ],\n  declarations: [HeaderComponent],\n  exports: [HeaderComponent]\n})\nexport class SharedModule { }\n",
+          "name" : "shared.module.ts",
+          "order" : 2,
+          "path" : "app/shared/components/header/"
+        } ],
+        "order" : 20,
+        "text" : "Notice that we added the flag --export, it will automatically add the component in the exports section in our shared.module {.alert .alert-info}\n\nWe update the template with a link to the home page. \n\nAs we are using Route directive, we need to be sure that we import the RouterModule in the ShareModule. {.alert .alert-warning}\n"
+      }, {
+        "files" : [ {
+          "content" : "<dr-header></dr-header>\n<router-outlet></router-outlet>",
+          "name" : "app.component.html",
+          "order" : 2,
+          "path" : "app/"
+        }, {
+          "content" : "// ... imports\nimport { SharedModule } from './shared/shared.module';\n\n@NgModule({\n  // ... metadata\n  imports: [\n    //... modules\n    SharedModule\n  ]\n})\nexport class AppModule { }\n",
+          "name" : "app.module.ts",
+          "order" : 1,
+          "path" : "app/"
+        } ],
+        "order" : 21,
+        "text" : "We are ready to use the component. We need to import the ShareModule to our AppModule and use the component in the app template."
+      }, {
+        "files" : [ {
+          "content" : "npm run ghp",
+          "order" : 1
+        } ],
+        "order" : 22,
+        "text" : "## Conclusion\n\nWe have everything working together, we can navigate between our components, and getting the data from a common place from different components.\n\nAfter that, we can publish again the code the Github pages, and we should have our code working in the cloud.\n"
+      }, {
+        "order" : 23,
+        "text" : "In the next post, we will extend the basic blog interface to a more complex one, and we will create all the component to display the information. We will be styling the site using @angular/material."
+      } ],
+      "title" : "Adding basic structure and routing"
+    },
+    "-KW-U1bptyI7YgUnfd1C" : {
+      "date_created" : "2017-02-07 01:01:06",
+      "date_published" : "2017-03-10T03:00:00.000Z",
+      "header" : "Create your angular blog (3)",
+      "key" : "create_angular_blog_3",
+      "sections" : [ {
+        "order" : 1,
+        "text" : "This article is part of a series that takes you through the steps of creating your own blog using Angular and TypeScript. They will cover the core fundamentals of angular at the same time that we are building our data-driven application. We will be displaying the list of blog post and a post itself, we will be able to edit them using Reactive Forms, store them in a database (firebase) and navigate among those components. We will be hosting the blog in Github Pages.\n\nThis is the third part, we are going to extend the Blog interface to its final version, updating our service to read the data from a JSON file and our components to display all that information. We will use Angular Material to add some styles and working with third parties libraries to build the blog."
+      }, {
+        "order" : 2,
+        "text" : "If you get lost, you can check the code of the section [here](https://github.com/daniru/blog/tree/step_3). {.alert}"
+      }, {
+        "files" : [ {
+          "content" : "npm i @angular/material font-awesome markdown-it markdown-it-attrs google-code-prettify clipboard moment @angular/animations@next --save\nnpm i @types/markdown-it @types/clipboard --save-dev",
+          "order" : 1
+        } ],
+        "order" : 3,
+        "text" : "## Libraries\n\nThrough this post, we will be working with a few libraries. This is a list of them:\n\n| Package | Web | NPM | Version | Description |\n|---|---|---|---|---|\n| @angular/material | [web](https://material.angular.io/) | [link](https://www.npmjs.com/package/@angular/material) |  2.0.0-beta.2 | Responsive design and basic styles. |\n| @angular/animations | [web](https://material.angular.io/) | [link](https://www.npmjs.com/package/@angular/animations) |  2.0.0-rc.2 | Angular v4 has removed animations from core. So we need to import it to use tooltips from angular/material. Is possible that next version will include it automatically.  |\n| font awesome | [web](http://fontawesome.io/) | [link](https://www.npmjs.com/package/font-awesome) | 4.7.0 | More icons |\n| google-code-pretiffy | [web](https://github.com/google/code-prettify) | [link](https://www.npmjs.com/package/google-code-prettify) | 1.0.5 | To make look nicer our file contents |\n| markdown-it | [web](https://github.com/markdown-it/markdown-it) | [link](https://www.npmjs.com/package/markdown-it) | 8.3.0 | Parse markdown  |\n| markdown-it-attrs | [web](https://github.com/arve0/markdown-it-attrs) | [link](https://www.npmjs.com/package/markdown-it-attrs) | 0.8.0 | Extension to add classes in markdown |\n| clipboard | [web](https://clipboardjs.com/) | [link](https://www.npmjs.com/package/clipboard)| 1.6.1  | To copy data to the clipboard |\n| moment | [web](https://momentjs.com/) | [link](https://www.npmjs.com/moment) | 2.17.1 | Manage dates |\n| @types/markdown-it | | [link](https://www.npmjs.com/package/@types/markdown-it) | 0.0.2 | Type definition for markdown-it. |\n| @types/clipboard |  | [link](https://www.npmjs.com/package/@types/clipboard) | 1.5.31 | Type definition for clipboard library |\n\n\nWe are going to install them now."
+      }, {
+        "files" : [ {
+          "content" : "@import \"./styles/_colors\";\n@import \"./styles/_material.overwrites\";\n@import \"./styles/_preloader\";\n\nbody, html {\n  background-color: $background;\n  color: $color;\n  margin: 0;\n}\n\n.container {\n  margin-left: auto;\n  margin-right: auto;\n  max-width: 1140px;\n  position: relative;\n}\n\na {\n  color: $colorA200;\n  text-decoration: none;\n  &:hover { color: $color600; }\n}\n\n.fill-remaining-space {\n  flex: 1 1 auto;\n}\n\n.full-width,\n.full-size {\n  width: 100%;\n}\n\n* {\n  outline: 0;\n}\n\n",
+          "name" : "styles.scss",
+          "order" : 1,
+          "path" : "/"
+        }, {
+          "content" : "$color: #202121;\n$background: #f0f3f2;\n\n$linksocial: #555;\n\n$white:      #fff !default;\n$black:      #000 !default;\n$red:        #d9534f !default;\n$orange:     #f0ad4e !default;\n$yellow:     #ffd500 !default;\n$green:      #5cb85c !default;\n$blue:       #0275d8 !default;\n$teal:       #5bc0de !default;\n$pink:       #ff5b77 !default;\n$purple:     #613d7c !default;\n$blue-dark:  #558abb;\n$blue-light: #dde4e9;\n\n// Create grayscale\n$gray-dark:                 #292b2c !default;\n$gray:                      #464a4c !default;\n$gray-light:                #636c72 !default;\n$gray-lighter:              #d0d0d0 !default;\n$gray-lightest:             #e7e7e9 !default;\n\n$table-border-color: #d0d0d0;\n$table-background: #fff;\n\n$color50:   #e8eaf6;\n$color100:  #b7bec6;\n$color200:  #8792a0;\n$color300:  #576679;\n$color400:  #33465d;\n$color500:  #0f2540;\n$color600:  #0d213a;\n$color700:  #0b1b32;\n$color800:  #08162a;\n$color900:  #040d1c;\n$colorA100: #5196e4;\n$colorA200: #276bff;\n$colorA400: #004cf3;\n$colorA700: #0044da;",
+          "name" : "_colors.scss",
+          "order" : 2,
+          "path" : "/styles/"
+        }, {
+          "content" : "@import \"./_colors\";\n\n@-webkit-keyframes spin {\n  0% { transform: rotate(0deg); }\n  100% { transform: rotate(360deg);  } }\n\n@-moz-keyframes spin { \n  0% { -moz-transform: rotate(0deg);  }\n  100% { -moz-transform: rotate(360deg); } }\n\n@keyframes spin {\n  0% { transform: rotate(0deg); }\n  100% { transform: rotate(360deg); } }\n\n\n#preloader {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  z-index: 1003;\n  background: $background;\n\n  & > div {\n    display: block;\n    position: relative;\n    left: 50%;\n    top: 50%;\n    width: 150px;\n    height: 150px;\n    margin: -75px 0 0 -75px;\n    border-radius: 50%;\n    border: 3px solid transparent;\n    border-top-color: $color800;\n    transform: translate3d(0, 0, 0);\n    animation: spin 2s linear infinite;\n\n    &:before {\n      content: \"\";\n      position: absolute;\n      top: 5px;\n      left: 5px;\n      right: 5px;\n      bottom: 5px;\n      border-radius: 50%;\n      border: 3px solid transparent;\n      border-top-color: $color500;\n      -webkit-animation: spin 3s linear infinite;\n      animation: spin 3s linear infinite;\n    }\n    &:after {\n      content: \"\";\n      position: absolute;\n      top: 15px;\n      left: 15px;\n      right: 15px;\n      bottom: 15px;\n      border-radius: 50%;\n      border: 3px solid transparent;\n      border-top-color: $color200;\n      animation: spin 1.5s linear infinite;\n    }\n  }\n}\n",
+          "name" : "_preloader.scss",
+          "order" : 3,
+          "path" : "/styles/"
+        }, {
+          "content" : "@import '~@angular/material/core/theming/all-theme';\n@import \"./_colors\";\n\n@include mat-core();\n$mat-daniru: (\n  50:   $color50,\n  100:  $color100,\n  200:  $color200,\n  300:  $color300,\n  400:  $color400,\n  500:  $color500,\n  600:  $color600,\n  700:  $color700,\n  800:  $color800,\n  900:  $color900,\n  A100: $colorA100,\n  A200: $colorA200,\n  A400: $colorA400,\n  A700: $colorA700,\n  contrast: (\n    50: $black-87-opacity,\n    100: $black-87-opacity,\n    200: $black-87-opacity,\n    300: $black-87-opacity,\n    400: $black-87-opacity,\n    500: white,\n    600: white,\n    700: white,\n    800: $white-87-opacity,\n    900: $white-87-opacity,\n    A100: $black-87-opacity,\n    A200: $black-87-opacity,\n    A400: $black-87-opacity,\n    A700: $black-87-opacity,\n  )\n);\n\n$app-primary: mat-palette($mat-daniru, 500);\n$app-accent:  mat-palette($mat-blue, 100, A100, A400);\n\n// The warn palette is optional (defaults to red).\n$app-warn:  mat-palette($mat-red);\n\n// Create the theme object (a Sass map containing all of the palettes).\n$app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);\n\n// Include theme styles for core and each component used in your app.\n// Alternatively, you can import and @include the theme mixins for each component\n// that you are using.\n@include angular-material-theme($app-theme);\n",
+          "name" : "_material.overwrites.scss",
+          "order" : 4,
+          "path" : "/styles/"
+        } ],
+        "order" : 4,
+        "text" : "## Basic Styles\n\nWe have just installed @angular/material. It will help us to style our blog, most of the components have their own styles built-in.\n\nWe will just need to add a few global styles to complement them, and we will set up our own material palette.\n\nYou can have a look to the material documentation [here](https://material.angular.io). {.alert}\n\nI decided to split the global styles into a few files by topic:\n\n- _colors: to keep all the colors for consistency, and it will be imported by other SCSS files.\n- _material.overwrites: setup of a new custom palette for our material components.\n- _preloader: nice CSSfor the preloader animation.\n"
+      }, {
+        "files" : [ {
+          "content" : "<!-- inside the body -->\n<dr-root>\n    <div id=\"preloader\">\n        <div id=\"spinner\"></div>\n    </div>\n</dr-root>",
+          "name" : "index.html",
+          "order" : 1,
+          "path" : "app/"
+        } ],
+        "order" : 5,
+        "text" : "We add the preloader animation inside our dr-root component in index.html"
+      }, {
+        "order" : 6,
+        "text" : "This is just a design idea. Feel free to adapt any styles/colors as you want across of the articles. I am not going to pay much attention to most of the styles as it is not the goal. {.alert .alert-secondary }"
+      }, {
+        "files" : [ {
+          "content" : "<!-- append to the bottom of the head -->\n<link href=\"https://fonts.googleapis.com/css?family=Roboto|Kalam\" rel=\"stylesheet\">\n<link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n",
+          "name" : "index.html",
+          "order" : 1,
+          "path" : "/"
+        }, {
+          "content" : "...\n      \"styles\": [\n        \"../node_modules/font-awesome/css/font-awesome.min.css\",\n        \"styles.scss\"\n      ],\n...",
+          "name" : ".angular-cli.json",
+          "order" : 2
+        } ],
+        "order" : 7,
+        "text" : "\n## Fonts\n\nOur main font will be Roboto, the material standard one. We include an extra font from Google Fonts just for the title, and Material Icons to use them in the app. We just need to add them in the index.html\n\nMaterial icons do not contain all the icons that we need, so we add Font Awesome. We need to reference its style file in the styles array inside **@angular/cli** configuration file."
+      }, {
+        "files" : [ {
+          "content" : "//... other imports\n\nimport { MaterialModule } from '@angular/material';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\n\n@NgModule({\n  //... other metadata\n  imports: [\n    //... other imports\n    MaterialModule,\n    BrowserAnimationsModule \n])\nexport class AppModule { }\n",
+          "name" : "app.module.ts",
+          "order" : 1,
+          "path" : "app/"
+        }, {
+          "content" : "//... other imports\nimport { MdToolbarModule } from '@angular/material';\n\n@NgModule({\n  //... other metadata\n  imports: [\n    //... other imports\n    MdToolbarModule\n  ]\n})\nexport class SharedModule { }\n",
+          "name" : "shared.module.ts",
+          "order" : 2,
+          "path" : "app/shared/"
+        }, {
+          "content" : "<md-toolbar color=\"primary\">\n  <div class=\"logo\" routerLink=\"/\">Daniru</div>\n</md-toolbar>\n",
+          "name" : "header.component.html",
+          "order" : 3,
+          "path" : "app/shared/components/header/"
+        }, {
+          "content" : ".logo {\n  cursor: pointer;\n  font-family: 'Kalam', cursive;\n  font-size: 25px;\n  text-transform: uppercase;\n}\n\n",
+          "name" : "header.component.scss",
+          "order" : 4,
+          "path" : "app/shared/components/header/"
+        } ],
+        "order" : 8,
+        "text" : "## Header\n\nWe are going to use the Material Toolbar component to improve the header component style. To use Material, we will need to import the module in our **App.Module**. \n\nAs Material is using animations, we will need to import the **BrowserAnimationsModule** from **@angular/platform-browser/animations**. {.alert .alert-warning}\n\nIn the Share module, we will need to import only MdToolbarModule from @angular/material, that way any template in that module will be able to use the toolbar components. We will use them in the header template.\n\nLet's have a look how to do it."
+      }, {
+        "files" : [ {
+          "content" : "ng g interface blog/models/section\nng g interface blog/models/file",
+          "order" : 1
+        } ],
+        "order" : 9,
+        "text" : "## Extending Models\n\nOur current implementation of the Blog interface only contains two properties *(key and title)*. We are going to extend it adding a few more properties and an array of sections. Each section could contain a text or/and an array of files.\n\n\nWe create the section and file interfaces:"
+      }, {
+        "order" : 10,
+        "text" : "and copy the following structure."
+      }, {
+        "files" : [ {
+          "content" : "import { Section } from './section';\n\nexport interface Blog {\n  key: string;\n  header: string | null;\n  title: string;\n  date_created: Date;\n  date_published: Date | null;\n  sections: Section[];\n}\n",
+          "name" : "blog.ts",
+          "order" : 1,
+          "path" : "app/blog/models/"
+        }, {
+          "content" : "import { File } from './file';\n\nexport interface Section {\n  text: string | null;\n  files: File[] | null;\n  order: number;\n}\n",
+          "name" : "section.ts",
+          "order" : 2,
+          "path" : "app/blog/services/models/"
+        }, {
+          "content" : "export interface File {\n  name: string | null;\n  path: string | null;\n  content: string;\n  order: number;\n}\n",
+          "name" : "file.ts",
+          "order" : 3,
+          "path" : "app/blog/services/models/"
+        } ],
+        "order" : 11,
+        "text" : "\n"
+      }, {
+        "files" : [ {
+          "content" : "import { Injectable } from '@angular/core';\nimport { Http } from '@angular/http';\nimport { Observable, Subject } from 'rxjs/Rx';\nimport { Blog } from '../models/blog';\n\n@Injectable()\nexport class BlogService {\n\n  private _localCache: Blog[] = [];\n  private _blogSubject: Subject<Blog[]>;\n\n  // Initialize subject and request JSON file to store in the localCache.\n  constructor(private http: Http) {\n    this._blogSubject = new Subject<Blog[]>();\n    this.http\n      .get('./assets/data/data.json')\n      .map((res) =>  this._convertObjectToArray(res.json().blog))\n      .do((x) => {\n        this._localCache = x;\n        this._blogSubject.next(x);\n      })\n      .subscribe();\n  }\n\n  // Get blogs from the localCache or the observable\n  getBlogs(): Observable<Blog[]> {\n    return Observable.of(this._localCache)\n      .merge(this._blogSubject.asObservable())\n      .map((res) => res.reverse() );\n  }\n\n  // Get blog from the localCache or the observable\n  getBlog(key: string): Observable<Blog> {\n    const blog = this._localCache.filter(x => x.key === key);\n    const localObservable = Observable.of(blog || []);\n    return Observable\n      .merge(localObservable, this._blogSubject.asObservable())\n      .map(res => { return res && res.length === 0 ? null : res.find(x => x.key === key); });\n  }\n\n  // Convert object to array function\n  private _convertObjectToArray(data: any): Blog[] {\n    return Object.keys(data).map((key: string) => {\n      return <Blog>data[key];\n    });\n  }\n}\n",
+          "name" : "blog.service.ts",
+          "order" : 1,
+          "path" : "app/blog/services/"
+        } ],
+        "order" : 12,
+        "text" : "## Refactor Service to use JSON file\n\nWe need data that match our new interface definitions. We refactor our service to read data from a JSON file to match the same structure.\n\nI have created some sample data in a JSON file [here](https://raw.githubusercontent.com/daniru/blog/step_3/src/assets/data/data.json) that contains data exported from the firebase list that we will be using later on. So we can export/import the JSON file to work locally and remotely.  We can copy the file in **assets/data/data.json**. {.alert .alert-info}\n\nLet's have a look at the new blogService implementation."
+      }, {
+        "order" : 13,
+        "text" : "As the firebase list is an object with properties, we need to create a function *_convertObjectToArray* to get the keys of the objects and insert the value in an array. {.alert .alert-warning}\n\nNotice that we have added some new stuff. We read our file in the constructor, transform the data and populate the cache object. That way we only read the file once when the service is instantiated. Once we have the data ready, we emit that data in the Subject that we have created.\n\nA subject represents an object that is both an observable sequence as well as an observer. It acts as an Observer when we emit through it an event as soon as the data ready.\n\nIn the *getBlogs*, and *getBlog* methods, we get the data from the cache, and we merge with our Subject as an Observable. We do that in case that a component subscribes to the observable before we have any data in the cache object. In that case, it will receive and empty array/value when they subscribe, but as soon as we load the data from the file, they will receive the data through it.\n\nNow, the site should be displaying the header and three different titles. {.alert .alert-success}\n"
+      }, {
+        "files" : [ {
+          "content" : "ng g component blog/components/itemHeader",
+          "order" : 1
+        } ],
+        "order" : 14,
+        "text" : "## Blog Header Component\n\nNow that we have our data layer ready, we are going to display all this new information in our views. \n\nWe create the *item-header* component, that will be used in the list-item and item views. The component will have two inputs:\n\n- The Blog information.\n- A boolean to indicate if is the list-item or item.\n\nWe create it..."
+      }, {
+        "files" : [ {
+          "content" : "import { Component, OnChanges, Input, Inject } from '@angular/core';\nimport { DOCUMENT } from '@angular/platform-browser';\nimport { Blog } from '../../models/blog';\n\nconst window: any = {};\n\n@Component({\n  selector: 'dr-item-header',\n  templateUrl: './item-header.component.html',\n  styleUrls: ['./item-header.component.scss']\n})\nexport class ItemHeaderComponent implements OnChanges {\n\n  @Input() blog: Blog;\n  @Input() headerLink: boolean;\n\n  public socialLinks: any[];\n\n  constructor(@Inject(DOCUMENT) private document: any) {\n    this.socialLinks = [];\n  }\n\n  ngOnChanges() {\n    if (this.blog) {\n      this._populateSocialLinks();\n    }\n  }\n\n  private _populateSocialLinks() {\n      const shareText = `Have a look the new post by daniru ${this.blog.title}`;\n      const shareLink = `${this.document.location.href}${this.blog.key}`;\n\n      this.socialLinks = [\n        { url: `https://plus.google.com/share?url=${shareLink}`, icon: 'fa fa-google' },\n        { url: `https://www.facebook.com/sharer.php?u=${shareLink}&amp;t=${shareText}`, icon: 'fa fa-facebook'  },\n        { url: `https://twitter.com/share?text=${shareText}`, icon: 'fa fa-twitter'   },\n        { url: `http://pinterest.com/pin/create/button/?url=${shareLink}&amp;description=${shareText}`, icon: 'fa fa-pinterest' },\n        { url: `http://www.linkedin.com/shareArticle?mini=true&amp;url={{shareLink}}&amp;title=${shareText}`, icon: 'fa fa-linkedin'  }\n      ];\n  }\n\n}\n",
+          "name" : "item-header.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/item-header/"
+        }, {
+          "content" : "<md-card-title>\n  <h2 *ngIf=\"blog.header\"  color=\"primary\">{{blog.header}}</h2>\n  <h3>Article By <span>Daniru</span> &#8226; {{blog.date_published | date:'dd MMMM y'}}</h3>\n  <h1 *ngIf=\"!headerLink\">{{blog.title}}</h1>\n  <h1 *ngIf=\"headerLink\"><a [routerLink]=\"blog.key\">{{blog.title}}</a></h1>\n  <h4>\n    <div>\n      <a md-mini-fab color=\"accent\" *ngFor=\"let item of socialLinks\" [href]=\"item.url\" onclick='window.open(this.href,\"popupwindow\", \"width=800,height=500,left=200,top=5,scrollbars,toolbar=0,resizable\"); return false;' target=\"social\">\n        <i [class]=\"item.icon\"></i>\n      </a>\n    </div>\n  </h4>\n</md-card-title>\n",
+          "name" : "item-header.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item-header/"
+        }, {
+          "content" : "@import \"../../../../styles/_colors\";\n\n:host {\n  width: 100%;\n}\n\nmd-card-title {\n  text-align: center;\n  width: 100%;\n}\n\nh1 {\n  color: black;\n  font-size: 30px;\n  font-weight: normal;\n  margin-bottom: 10px;\n  padding: 0 0 10px;\n  text-transform: capitalize;\n  a {\n    color: $color500;\n    opacity: 1;\n    &:hover { opacity: 0.8;} \n  }\n}\n\nh2 {\n  border-bottom: 3px solid $colorA100;\n  display: inline;\n  font-size: 12px;\n  padding: 20px 5px 0px;\n  font-weight: normal;\n  text-transform: uppercase;\n}\n\nh3 {\n  color: $color400;\n  font-size: 14px;\n  font-weight: normal;\n  margin-bottom: 0px;\n  text-transform: uppercase;\n  opacity: 1;\n  \n}\n\nh4 {\n  display: inline;\n  button,\n  a {\n    font-size: 20px;\n    margin: 0px 5px; \n    opacity: 1;\n    &:hover { opacity: 0.8; }\n  }\n}\n\na {\n  cursor: pointer;\n  padding: 0;\n}\n",
+          "name" : "item-header.component.scss",
+          "order" : 3,
+          "path" : "app/blog/components/item-header/"
+        } ],
+        "order" : 15,
+        "text" : "and replace it with the following code:"
+      }, {
+        "files" : [ {
+          "content" : "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { MdCardModule, MdButtonModule } from '@angular/material';\nimport { BlogRoutingModule } from './blog-routing.module';\nimport { BlogService } from './services/blog.service';\nimport { ListComponent } from './components/list/list.component';\nimport { ListItemComponent } from './components/list-item/list-item.component';\nimport { ItemComponent } from './components/item/item.component';\nimport { ItemHeaderComponent } from './components/item-header/item-header.component';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    BlogRoutingModule,\n    MdCardModule, MdButtonModule\n  ],\n  providers: [BlogService],\n  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent]\n})\nexport class BlogModule { }\n",
+          "name" : "blog.module.ts",
+          "order" : 1,
+          "path" : "/src/app/blog/"
+        } ],
+        "order" : 16,
+        "text" : "In the component logic, we have created a public property *headerLinks*. Everytime that any input changes, we check if the required input exists and, we call a method to populate the array with the info to generate the link to the social networks.\n\nAngular provides a way to be able to detect any changes in the **Input()** parameters. We need to implement the **OnChanges** interface and implement the method **ngOnChanges ** that will be called every time any change is detected. {.alert .alert-info}\n\nIn the template we can notice a couple of things: \n\n- We are using another built-in directive, **ngIf**. This is rendering or not the template depending on the condition.\n- To show the date of the post in the template, we are using the built-in pipe [**date**](https://angular.io/docs/ts/latest/api/common/index/DatePipe-pipe.html), to help us to transform the date to our desired format.\n- We are using two new material component, MdCardTitle and MdMiniFab. We will need to import **MdCardModule** and **MdButtonModule** to our blog.module to be able to render those components.\n\n\n\nWe have some built-in pipes in angular. You can read more about them [here](https://angular.io/docs/ts/latest/guide/pipes.html) {.alert .alert-info}\n\n"
+      }, {
+        "files" : [ {
+          "content" : "<div class=\"container\" *ngIf=\"blog\">\n  <md-card>\n    <md-card-header>\n      <dr-item-header [blog]=\"blog\" [headerLink]=\"false\"></dr-item-header>\n    </md-card-header> \n    <md-card-content>\n    </md-card-content>\n  </md-card>\n</div>",
+          "name" : "item.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item/"
+        }, {
+          "content" : "md-card {\n  margin: 10px;\n}\n\nmd-card-header {\n  height: auto;\n}",
+          "name" : "item.component.scss",
+          "order" : 2,
+          "path" : "app/blog/components/item/"
+        }, {
+          "content" : "<div class=\"container\">\n  <md-card>\n    <md-card-header>\n      <dr-item-header [blog]=\"blog\" [headerLink]=\"true\"></dr-item-header>\n    </md-card-header> \n    <md-card-content>\n    </md-card-content>\n    <md-card-actions>\n      <button md-raised-button color=\"accent\" [routerLink]=\"blog.key\">Read More</button>\n    </md-card-actions>\n  </md-card>\n</div>\n",
+          "name" : "list-item.component.html",
+          "order" : 3,
+          "path" : "app/blog/components/list-item/"
+        }, {
+          "content" : "md-card {\n  margin: 10px;\n}\n\nmd-card-header {\n  height: auto;\n}\n\nmd-card-actions {\n  text-align: center;\n  button {\n    opacity: 1;\n    &:hover { opacity: 0.8; }\n  }\n}",
+          "name" : "list-item.component.scss",
+          "order" : 4,
+          "path" : "app/blog/components/list-item/"
+        } ],
+        "order" : 17,
+        "text" : "We use this new **itemHeader** Component in the **item** and **listItem** templates.\n"
+      }, {
+        "order" : 18,
+        "text" : "Now, we can navigate, as before, between the blog and the list, but with a nicer look."
+      }, {
+        "files" : [ {
+          "content" : "ng g c blog/components/itemSection",
+          "order" : 1
+        } ],
+        "order" : 19,
+        "text" : "## Section Component\n\nIf we have a look at the interfaces again, each blog has an array of sections, and they can have a text and/or a list of files.\n\nWe create a new section component to display the data of each section. It will have a single input parameter with the section that we will use in the template straight away.\n\nAs usual:\n"
+      }, {
+        "files" : [ {
+          "content" : "import { Component, Input  } from '@angular/core';\nimport { Section } from '../../models/section';\n\n@Component({\n  selector: 'dr-item-section',\n  templateUrl: './item-section.component.html',\n  styleUrls: ['./item-section.component.scss']\n})\nexport class ItemSectionComponent {\n\n  @Input() section: Section;\n\n}\n",
+          "name" : "item-section.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/item-section/"
+        }, {
+          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\">{{section.text}}</div>\n</div>",
+          "name" : "item-section.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item-section/"
+        }, {
+          "content" : "@import '../../../../styles/_colors';\n\n:host {\n  font-size: 17px;\n  text-align: justify;\n\n  /deep/ {\n\n    blockquote,\n    .alert {\n      background: $gray-lightest;\n      border-left: 4px solid $gray-light;\n      border-width: 0 0 0 5px;\n      color: $gray-light;\n      margin: 10px 0 10px 0;\n      padding: 15px;\n      &.alert-primary {   border-color: $blue;        background-color: lighten($blue, 40%); }\n      &.alert-success {   border-color: $green;       background-color: lighten($green, 40%); }\n      &.alert-info {      border-color: $gray-light;  background: $gray-lightest; }\n      &.alert-warning {   border-color: $orange;      background-color: lighten($orange, 30%);  }\n      &.alert-danger {    border-color: $red;         background-color: lighten($red, 30%); }\n      &.alert-inverse {   border-color: $gray-dark;   background-color: lighten($gray-dark, 40%); }\n      &.alert-secondary { border-color: $gray-light;  background: $gray-lightest; }\n    }\n\n    h2 {\n      border-bottom: 1px solid $colorA100;\n      font-size: 25px;\n      margin: 30px 0;\n      opacity: .7;\n      padding: 5px 0;\n    }\n\n    h3 {\n      font-size: 22px;\n      margin: 30px 0;\n      opacity: .6;\n      padding: 5px 0;\n    }\n\n    code {\n      background: $white;\n      border: 1px solid $gray-lighter;\n      display: block;\n      font-size: 12px;\n      padding: 10px;\n    }\n\n    table {\n      background: $table-background;\n      margin-bottom: 1rem;\n      max-width: 100%;\n      width: 100%;\n\n      th,\n      td {\n        border-bottom: 1px solid $table-border-color;\n        margin-bottom: 1rem;\n        padding: .74rem;\n        vertical-align: top;\n      }\n\n      thead th {\n        border-bottom: 2px solid $table-border-color;\n        vertical-align: bottom;\n      }\n\n      tbody + tbody {\n        border-top: 2px solid $table-border-color;\n      }\n    }\n  }\n}\n",
+          "name" : "item-section.component.scss",
+          "order" : 3,
+          "path" : "app/blog/components/item-section/"
+        } ],
+        "order" : 20,
+        "text" : "And the code as follows:"
+      }, {
+        "files" : [ {
+          "content" : "<div class=\"container\" *ngIf=\"blog\">\n  <md-card>\n    <md-card-header>\n      <dr-item-header [blog]=\"blog\" [headerLink]=\"false\"></dr-item-header>\n    </md-card-header> \n    <md-card-content>\n        <dr-item-section *ngFor=\"let section of blog.sections\" [section]=\"section\"></dr-item-section>\n    </md-card-content>\n  </md-card>\n</div>",
+          "name" : "item.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item/"
+        }, {
+          "content" : "<div class=\"container\">\n  <md-card>\n    <md-card-header>\n      <dr-item-header [blog]=\"blog\" [headerLink]=\"true\"></dr-item-header>\n    </md-card-header>\n    <md-card-content>\n      <dr-item-section [section]=\"firstSection\"></dr-item-section>\n    </md-card-content>\n    <md-card-actions>\n      <button md-raised-button color=\"accent\" [routerLink]=\"blog.key\">Read More</button>\n    </md-card-actions>\n  </md-card>\n</div>\n",
+          "name" : "list-item.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/list-item/"
+        }, {
+          "content" : "import { Component, Input, OnChanges } from '@angular/core';\nimport { Blog } from '../../models/blog';\nimport { Section } from '../../models/section';\n\n@Component({\n  selector: 'dr-list-item',\n  templateUrl: './list-item.component.html',\n  styleUrls: ['./list-item.component.scss']\n})\nexport class ListItemComponent implements OnChanges {\n\n  @Input() blog: Blog;\n  public firstSection: Section;\n\n  ngOnChanges() {\n    if (this.blog) {\n      this.firstSection = this.blog.sections.find((x) => x.order === 1);\n    }\n  }\n}\n",
+          "name" : "list-item.component.ts",
+          "order" : 3,
+          "path" : "app/blog/components/list-item/"
+        } ],
+        "order" : 21,
+        "text" : "Notice in the SCSS what we are using /deep/. This is needed to be able to style inside to the shadow DOM. {.alert }\n\nWe will use the new component in **item.component** and **list-item.component**, the first one will display all the sections and the second only the first section. We have the code for those components here:"
+      }, {
+        "files" : [ {
+          "content" : "ng g pipe shared/pipes/markdown --export",
+          "order" : 1
+        } ],
+        "order" : 22,
+        "text" : "## Custom Markdown Pipe\n\nThe input text will support Markdown, so we will need to transform it. In the item header, we have been using the built-in pipe *date* to transform the date to the desired format. But Angular doesn't have any to transform markdown, so we will need to create a custom pipe to transform our raw markdown text.\n\nAngular provides us with the @Pipe decorator to do it. Let's create it in our shared module."
+      }, {
+        "files" : [ {
+          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\nimport * as MarkdownIt from 'markdown-it';\n\ndeclare var require: any;\nconst markdownItAttrs = require('markdown-it-attrs');\n\n@Pipe({\n  name: 'markdown'\n})\nexport class MarkdownPipe implements PipeTransform {\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(data: string): SafeHtml {\n    if (data) {\n      const md = new MarkdownIt();\n      md.use(markdownItAttrs);\n      return this.sanitizer.bypassSecurityTrustHtml(md.render(data));\n    } else {\n      return this.sanitizer.bypassSecurityTrustHtml('No Data');\n    }\n  }\n}\n",
+          "name" : "markdown.pipe",
+          "order" : 1,
+          "path" : "app/shared/pipes/"
+        } ],
+        "order" : 23,
+        "text" : "We will use two of the libraries **markdown-it** and **markdown-it-attrs** to transform markdown text to a normal HTML. The first one makes the transformation itself,  the second one provides the option to add classes.\n\nIn the transform method, we receive a string, and we apply the markdown libraries to transform it to HTML code. We will need to use the Sanitizer provider from Angular to let angular know that it can trust on that raw htHTMLml.\n\nBy default angular sanitize the text to avoid XSS risks. We need to be sure that the data that we bypass is completely secure, we know the source and doesn't contain dangerous scripts {.alert .alert-danger}\n"
+      }, {
+        "files" : [ {
+          "content" : "// ... imports\nimport { SharedModule } from '../shared/shared.module';\n\n@NgModule({\n  // ... metatada \n  imports: [\n    // ... imports\n    SharedModule\n  ]\n})\nexport class BlogModule { }\n",
+          "name" : "blog.module.ts",
+          "order" : 1,
+          "path" : "app/blog/"
+        }, {
+          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\" [innerHTML]=\"section.text | markdown\"></div>\n</div>",
+          "name" : "item-section.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item-section/"
+        } ],
+        "order" : 24,
+        "text" : "To be able to consume it from our ItemSection Component, we will need to import the Shared Module in our BlogModule, and update our ItemSection template to use it.\n"
+      }, {
+        "files" : [ {
+          "content" : "ng g c blog/components/itemFiles",
+          "order" : 1
+        } ],
+        "order" : 25,
+        "text" : "## File Component\n\nWe need a component to display all the files. We will use the tab component from material to display the array of files and we will format the file using a new pipe.\n\nLet's start adding the component."
+      }, {
+        "files" : [ {
+          "content" : "import { Component, Input, OnChanges } from '@angular/core';\nimport { File } from './../../models/file';\n\n@Component({\n  selector: 'dr-item-files',\n  templateUrl: './item-files.component.html',\n  styleUrls: ['./item-files.component.scss']\n})\nexport class ItemFilesComponent {\n\n  @Input() files: File[];\n\n  getClass(file: File): string {\n    if (!file.name) { return ''; }\n\n    const split = file.name.split('.');\n    const extension = split[split.length - 1];\n    switch (extension) {\n      default: return `file lang-${extension}`;\n    }\n  }\n}\n",
+          "name" : "item-files.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/item-files/"
+        }, {
+          "content" : "<section *ngIf=\"files\">\n  <md-tab-group *ngIf=\"files.length > 1 || (files.length === 1 && files[0].name)\">\n    <md-tab *ngFor=\"let file of files\">\n      <template md-tab-label>\n        <section [class]=\"getClass(file)\" class=\"filesheader\">\n          <div class=\"path\" *ngIf=\"file.path\">{{file.path}}</div>\n          <div class=\"filename\" *ngIf=\"file.name\">{{file.name}}</div>\n        </section>\n      </template>\n      <section>\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content\"></pre>\n      </section>\n    </md-tab>\n  </md-tab-group>\n  <section *ngIf=\"files.length === 1 && ! files[0].name\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content\"></pre>\n  </section>\n</section>\n",
+          "name" : "item-files.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/item-files/"
+        }, {
+          "content" : "@import \"../../../../styles/_colors\";\n\nmd-tab-group {\n  background-color: $color50;\n  /deep/ {\n    .path {\n      color: $color700;\n      font-size: 0.7em;\n      position: absolute;\n      width: 100%;\n      text-align: left;\n      top: -12px;\n    }\n\n    .md-tab-label-active { opacity: 1; }\n    .md-tab-header { border-color: $color100; }\n\n    .filename {\n      font-size: 1em;\n      padding-top: 5px;\n    }\n\n    .file {\n\n      &.lang-html {\n        color: $green;\n      }\n      &.lang-ts {\n        color: $blue;;\n      }\n      &.lang-scss {\n        color: $purple;\n      }\n    }\n  }\n}\n\npre {\n  font-size: 80%;\n  margin: 0;\n  overflow: auto;\n  padding: 10px 20px;\n}\n\n",
+          "name" : "item-files.component.scss",
+          "order" : 3,
+          "path" : "app/blog/components/item-files/"
+        } ],
+        "order" : 26,
+        "text" : "The component has one Input property, the array of files, and one method to calculate the class depending on the filename.\n\nIn the template we will check if we have some information in the *files* property to render a tab control, showing the title of the files or file if has a filename, and the content of it using a new custom pipe called prettyfile. If we only have one file without a name, we will only show the content of the file.\n"
+      }, {
+        "files" : [ {
+          "content" : "<div *ngIf=\"section?.text\">\n  <div id=\"wrapper\" [innerHTML]=\"section.text | markdown\"></div>\n</div>\n<div *ngIf=\"section?.files\">\n  <dr-item-files [files]=\"section.files\"></dr-item-files>\n</div>",
+          "name" : "item-section.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item-section/"
+        }, {
+          "content" : "import { MdCardModule, MdButtonModule, MdTabsModule } from '@angular/material';\n...\n\n@NgModule({\n  imports: [\n    ...\n    MdTabsModule\n    ...\n  ],",
+          "name" : "blog.module.ts",
+          "order" : 2,
+          "path" : "app/blog/"
+        } ],
+        "order" : 27,
+        "text" : "We will use the new component in our **item-section** template.\n\nRemember to include the MdTabsModule in the blog.module to be able to use it. {.alert .alert-warning}"
+      }, {
+        "files" : [ {
+          "content" : "ng g pipe shared/pipes/prettyfile --export",
+          "order" : 1
+        } ],
+        "order" : 28,
+        "text" : "## PrettyFile pipe\n\nWe need another custom Pipe to transform the raw content and a formatted one. We will use *google-code-prettify* library to make nicer the content of the files."
+      }, {
+        "files" : [ {
+          "content" : "import { Pipe, PipeTransform } from '@angular/core';\nimport { DomSanitizer, SafeHtml } from '@angular/platform-browser';\n\ndeclare var require: any;\nconst PR = require('google-code-prettify/bin/prettify.min');\n\n@Pipe({\n  name: 'prettyfile'\n})\nexport class PrettyfilePipe implements PipeTransform {\n\n  private _entityMap: any = {\n    '<': `&lt;`,\n    '>': '&gt;',\n    '\"': '&quot;',\n    '\\'': '&#39;',\n    '/': '&#x2F;',\n    '`': '&#x60;',\n    '=': '&#x3D;',\n    '&': '&amp;',\n  };\n\n  constructor(private sanitizer: DomSanitizer) {}\n\n  transform(content: string, filename: string): SafeHtml {\n    const language = this._getLanguage(filename);\n    let text = this._escapeHtml(content);\n\n    text = PR.prettyPrintOne(text, language, false);\n    return this.sanitizer.bypassSecurityTrustHtml(text);\n  }\n\n  private _getLanguage(filename: string): string {\n    if (!filename) { return ''; }\n    const split = filename.split('.');\n    if (split.length <= 1) { return ''; }\n    const extension = split[split.length - 1];\n    switch (extension) {\n      case 'scss': return 'css';\n      default: return `${extension}`;\n    }\n  }\n\n  private _escapeHtml(string: string): string {\n    return String(string).replace(/[&<>\"'`=\\/]/g, (s) => this._entityMap[s] );\n  }\n}\n",
+          "name" : "prettyfile.pipe.ts",
+          "order" : 1,
+          "path" : "app/shared/pipes/"
+        } ],
+        "order" : 29,
+        "text" : "\nThe pipe is pretty similar to the previous one, we have a couple of private methods to identify the language from the extension, and to escape the especial characters. \n"
+      }, {
+        "files" : [ {
+          "content" : "      \"styles\": [\n        \"../node_modules/font-awesome/css/font-awesome.min.css\",\n        \"../node_modules/google-code-prettify/bin/prettify.min.css\",\n        \"./styles/github-v2.min.css\",\n        \"styles.scss\"\n      ],",
+          "name" : ".angular-cli.json",
+          "order" : 1
+        } ],
+        "order" : 30,
+        "text" : "We need to import the default styles from the *prettify* library and include them in the styles sections inside the angular/CLI configuration file.\n\nIf you want to apply a custom style (as I did with githubv2 style), you can download the file, add it in the styles folder and import it the same way as the prettify CSS file. There are plenty of styles to apply to prettyPrint, you can find a few [here](https://jmblog.github.io/color-themes-for-google-code-prettify/) and [here](https://github.com/daylerees/colour-schemes/tree/master/prettyprint);\n"
+      }, {
+        "files" : [ {
+          "content" : "<section *ngIf=\"files\">\n  <md-tab-group *ngIf=\"files.length > 1 || (files.length === 1 && files[0].name)\">\n    <md-tab *ngFor=\"let file of files\">\n      <template md-tab-label>\n        <section [class]=\"getClass(file)\" class=\"filesheader\">\n          <div class=\"path\" *ngIf=\"file.path\">{{file.path}}</div>\n          <div class=\"filename\" *ngIf=\"file.name\">{{file.name}}</div>\n        </section>\n      </template>\n      <section>\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content | prettyfile:file.name\"></pre>\n      </section>\n    </md-tab>\n  </md-tab-group>\n  <section *ngIf=\"files.length === 1 && ! files[0].name\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content | prettyfile:files[0].name\"></pre>\n  </section>\n</section>\n",
+          "name" : "item-files.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item-files/"
+        } ],
+        "order" : 31,
+        "text" : "We are ready to use the pipe in the FilesTemplate."
+      }, {
+        "files" : [ {
+          "content" : "ng g d shared/directives/clipboard --export",
+          "order" : 1
+        } ],
+        "order" : 32,
+        "text" : "## Clipboard Directive\n\nWe want to offer the user a quick way to copy the content of our files.  We are going to create a directive called clipboard, as we need some interaction with the DOM."
+      }, {
+        "files" : [ {
+          "content" : "import { Directive, OnInit, Input, ElementRef, HostListener, RendererV2 } from '@angular/core';\nimport * as Clipboard from 'clipboard';\n\n@Directive({\n  selector: '[drClipboard]'\n})\nexport class ClipboardDirective  {\n\n  @Input() text: string;\n  private _button: any;\n\n  @HostListener('mouseenter') onMouseEnter() {\n    if (!this._button) {\n      this._button = this._renderer.createElement('button');\n      this._button.innerHTML = 'copy';\n      this._button.className = 'copybutton mat-accent mat-raised-button';\n      this._element.nativeElement.append(this._button);\n      this._renderer.listen(this._button, 'click', () => { this._copyToClipboard(); return true; });\n    } else {\n      this._button.className = 'copybutton mat-accent mat-raised-button';\n    }\n  }\n\n  @HostListener('mouseleave') onMouseLeave() {\n    if (this._button) {\n      this._button.className = 'hiddenbutton';\n    }\n  }\n\n  constructor(private _element: ElementRef, private _renderer: RendererV2) {\n  }\n\n  private _copyToClipboard() {\n    const clipboard = new Clipboard(this._element.nativeElement, { text: () => this.text });\n    clipboard.on('success', (e) => { clipboard.destroy(); });\n  }\n}\n",
+          "name" : "clipboard.directive.ts",
+          "order" : 1,
+          "path" : "app/shared/directives/"
+        } ],
+        "order" : 33,
+        "text" : "In the directive, we create two **@HostListener()** to listen when the mouse enters or leaves the element.\n\nWhen the mouse first enters, we will create a button, and after that, we will be hiding or showing it when we leave or enter the elements. \n\nWhen we click on the button, we will copy the content of the file to the clipboard thanks to the clipboard library."
+      }, {
+        "files" : [ {
+          "content" : "<!-- ... -->\n      <section class=\"down\" drClipboard [text]=\"file.content\">\n        <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"file.content | prettyfile:file.name\"></pre>\n      </section>\n  <!-- ... -->\n  <section class=\"down\" *ngIf=\"files.length === 1 && ! files[0].name\" drClipboard [text]=\"files[0].content\">\n    <pre class=\"prettyprint prettyprinted\" [innerHTML]=\"files[0].content | prettyfile:files[0].name\"></pre>\n  </section>\n<!-- ... -->\n",
+          "name" : "item-files.component.html",
+          "order" : 1,
+          "path" : "app/blog/components/item-files/"
+        }, {
+          "content" : "// ... append to the button \n\n.copybutton {\n  position: absolute;\n  right: 7px;\n  top: 7px;\n  height: 22px;\n  line-height: initial;\n  background: $color300;\n  color: $background;\n}\n\n.hiddenbutton {\n  display: none;\n}\n\n.down {\n  position: relative;\n}",
+          "name" : "item-files.component.scss",
+          "order" : 2,
+          "path" : "app/blog/components/item-files/"
+        } ],
+        "order" : 34,
+        "text" : "We will use it in the blog-file components, so we will modify our blog-files template, to add the directive and add some CSS to show the button in the top right corner of the box."
+      }, {
+        "files" : [ {
+          "content" : "ng g c blog/components/pagination",
+          "order" : 1
+        } ],
+        "order" : 35,
+        "text" : "## Pagination\n\nBefore finish the article, we have notice that we have been created a few blogs testing, and the list page has grown too big. So it is a good idea to implement pagination. "
+      }, {
+        "files" : [ {
+          "content" : "import { Component, Output, EventEmitter, Input } from '@angular/core';\n\n@Component({\n  selector: 'dr-pagination',\n  templateUrl: './pagination.component.html',\n  styleUrls: ['./pagination.component.scss']\n})\nexport class PaginationComponent {\n\n  @Input() page: number;\n  @Input() pages: number[];\n  @Output() pageChange = new EventEmitter();\n\n  setPage(num: number) {\n    this.pageChange.emit(num);\n  }\n}\n",
+          "name" : "pagination.component.ts",
+          "order" : 1,
+          "path" : "app/blog/components/pagination/"
+        }, {
+          "content" : "<section>\n    <button md-raised-button\n      [disabled]=\"page === 1\"\n      (click)=\"setPage(page - 1)\">Previous</button>\n    <button md-raised-button\n      *ngFor=\"let num of pages\"\n      [class.active]=\"page===num\"\n      (click)=\"page!==num && setPage(num)\">{{num}}</button>\n    <button md-raised-button\n      [disabled]=\"page === pages.length\"\n      (click)=\"setPage(page + 1)\">Next</button>\n</section>",
+          "name" : "pagination.component.html",
+          "order" : 2,
+          "path" : "app/blog/components/pagination/"
+        }, {
+          "content" : "section {\n  display: block;\n  margin-bottom: 20px;\n  text-align: center;\n}\n\nbutton.active {\n  background: #b7bec6;\n}",
+          "name" : "pagination.component.scss",
+          "order" : 3,
+          "path" : "app/blog/components/pagination/"
+        } ],
+        "order" : 36,
+        "text" : "Our component will display the selector page. It will take two input (current page and an array of available pages) and one output event to notify the parent the new page.\n\nWe are going to use a couple of new object from angular, **@Output** and **EventEmitter**. Those allow us to communicate with the parent emitting events sending information. There parent will execute the function assigned to the event **(pageChange)=\"doSomething($event)\"**.\n\nHere is our implementation of the component."
+      }, {
+        "files" : [ {
+          "content" : "  // new properties\n  public get page(): number {\n    return this._page;\n  }\n\n  public get pages(): number[] {\n    return Array(Math.ceil(this._count / this._blogsByPage)).fill(null).map((x, i) => i + 1);\n  }\n\n  private _count: number;\n  private _page: number;\n  private _blogsByPage: number;\n\n  constructor(private http: Http) {\n\n    // initialize them in the constuctor\n    this._page = 1;\n    this._count = 0;\n    this._blogsByPage = 3;\n\n    //...\n  }\n\n  // replace method\n  getBlogs(): Observable<Blog[]> {\n    return Observable.of(this._localCache)\n      .merge(this._blogSubject.asObservable())\n      .map((res) => {\n        this._count = res.length;\n        return res.reverse().slice((this._page - 1) * this._blogsByPage, (this._page) * this._blogsByPage);\n      });\n  }\n\n // add method\n  setPage(num: number) {\n    this._page = num;\n    this._blogSubject.next(this._localCache);\n  }\n\n}\n",
+          "name" : "blog.service.ts",
+          "order" : 1,
+          "path" : "app/blog/services/"
+        }, {
+          "content" : "  // new method\n  updatePage(page: number) {\n    this.blogService.setPage(page);\n  }\n\n",
+          "name" : "list.component.ts",
+          "order" : 2,
+          "path" : "app/blog/list/"
+        }, {
+          "content" : "<!-- append to the end -->\n<div class=\"container\">\n  <dr-pagination *ngIf=\"blogService.pages.length > 1\" \n    [page]=\"blogService.page\"\n    [pages]=\"blogService.pages\"\n    (pageChange)=\"updatePage($event)\">\n  </dr-pagination>\n</div>",
+          "name" : "list.component.html",
+          "order" : 3,
+          "path" : " app/blog/list/"
+        } ],
+        "order" : 37,
+        "text" : "We need to modify our BlogService and  BlogComponent.\n\nIn the service, we create three new private properties that will contain the number of blogs that we have, the current page and how many posts we display by page.  We implement a new *setPage* method to set the current page, and two public getters so read the current page, and an array of pages numbers *(we return an array to use straight away in the ngFor)*.\n\nThe *getBlogs* method will store the number of blogs, and we will slice the array to get the selected blogs.\n\nIn the BlogComponent, we will add our new component in the template, and we will add a new function in the component that will be called when the pagination component emits a changePage. It that case, we will set the page in the service, and when we apply next to the blogSubject, we will emit the values to the subscriber, our blogComponent, and it will update the list with the new values."
+      }, {
+        "order" : 38,
+        "text" : "## Conclusion\n\nWe started with a very basic application that showed only titles, and we are finishing with a styled blog.\nWe have been using a few new component from angular (pipes, directives, output, eventEmitter, ...), adding styles thanks to @angular/material, integrating a few libraries (markdown, prettify, clipboard), and finally adding pagination.\n\nWe have a nice blog fetching data locally. In the following post, we will integrate the blog with external sources, adding authentication and storage with Firebase."
+      } ],
+      "title" : "Extending models and adding styles"
+    }
+  }
+}

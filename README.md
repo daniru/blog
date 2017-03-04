@@ -27,3 +27,14 @@ As a prove of concept, we will connect to Firebase for authenticate and database
 
 > Check the [code](https://github.com/daniru/blog/tree/step_2) and read the [post](https://www.daniru.com/blog/create_angular_blog_2)
 
+### Step 3
+
+- Extend interfaces.
+- Refactor blog Service to read data from JSON File.
+- Create Compoennt to display the data from the new interfaces.
+- Create Custom Pipes to transform MarkDown text and pretyprint code files.
+- Create Directive to Clipboard the content of the files
+- Adding Pagination
+
+> Check the [code](https://github.com/daniru/blog/tree/step_3) and read the [post](https://www.daniru.com/blog/create_angular_blog_3)
+

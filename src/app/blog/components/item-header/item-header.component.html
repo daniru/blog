@@ -1,0 +1,13 @@
+<md-card-title>
+  <h2 *ngIf="blog.header"  color="primary">{{blog.header}}</h2>
+  <h3>Article By <span>Daniru</span> &#8226; {{blog.date_published | date:'dd MMMM y'}}</h3>
+  <h1 *ngIf="!headerLink">{{blog.title}}</h1>
+  <h1 *ngIf="headerLink"><a [routerLink]="blog.key">{{blog.title}}</a></h1>
+  <h4>
+    <div>
+      <a md-mini-fab color="accent" *ngFor="let item of socialLinks" [href]="item.url" onclick='window.open(this.href,"popupwindow", "width=800,height=500,left=200,top=5,scrollbars,toolbar=0,resizable"); return false;' target="social">
+        <i [class]="item.icon"></i>
+      </a>
+    </div>
+  </h4>
+</md-card-title>

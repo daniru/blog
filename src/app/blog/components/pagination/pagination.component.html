@@ -1,0 +1,12 @@
+<section>
+    <button md-raised-button
+      [disabled]="page === 1"
+      (click)="setPage(page - 1)">Previous</button>
+    <button md-raised-button
+      *ngFor="let num of pages"
+      [class.active]="page===num"
+      (click)="page!==num && setPage(num)">{{num}}</button>
+    <button md-raised-button
+      [disabled]="page === pages.length"
+      (click)="setPage(page + 1)">Next</button>
+</section>

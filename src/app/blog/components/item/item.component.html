@@ -1,3 +1,10 @@
-<div>
-Title: {{blog?.title}}
+<div class="container" *ngIf="blog">
+  <md-card>
+    <md-card-header>
+      <dr-item-header [blog]="blog" [headerLink]="false"></dr-item-header>
+    </md-card-header> 
+    <md-card-content>
+        <dr-item-section *ngFor="let section of blog.sections" [section]="section"></dr-item-section>
+    </md-card-content>
+  </md-card>
 </div>
