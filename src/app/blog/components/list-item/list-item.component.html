@@ -1,1 +1,12 @@
-<a [routerLink]="blog.key">{{blog.title}}</a>
+<div class="container">
+  <md-card>
+    <md-card-header>
+      <dr-item-header [blog]="blog" [headerLink]="true"></dr-item-header>
+    </md-card-header> 
+    <md-card-content>
+    </md-card-content>
+    <md-card-actions>
+      <button md-raised-button color="accent" [routerLink]="blog.key">Read More</button>
+    </md-card-actions>
+  </md-card>
+</div>
