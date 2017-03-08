@@ -1,0 +1,24 @@
+md-dialog-actions {
+  flex-direction: column;
+  width: 300px;
+  button {
+    margin: 3px !important;
+    width: 100%;
+    
+    &.delete,
+    &.google {
+      background-color: #DD4B39;
+      color:white;
+    }
+    &.github {
+      background-color: #444444;
+      color: white;
+    }
+    &.twitter {
+      background-color: #1da1f2;
+      color: white;
+    }
+    i { padding: 0 10px;}
+    &.half { width: 40%; }
+  }
+}

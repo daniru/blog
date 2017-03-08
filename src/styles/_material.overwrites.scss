@@ -48,3 +48,7 @@ $app-theme: mat-light-theme($app-primary, $app-accent, $app-warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($app-theme);
+
+snack-bar-container {
+  background: #DD4B39 !important;
+}

@@ -1,0 +1,6 @@
+<button md-icon-button (click)="showPanel()" *ngIf="!authService.user.isLogged" mdTooltip="Login">
+   <i class="fa fa-sign-in" aria-hidden="true"></i>
+</button>
+<button md-icon-button (click)="logout()" *ngIf="authService.user.isLogged" mdTooltip="Logout">
+  <i class="fa fa-sign-out" aria-hidden="true"></i>
+</button>
