@@ -62,6 +62,10 @@ export class BlogService {
     this._blogSubject.next(this._localCache);
   }
 
+  refresh() {
+    this._blogSubject.next(this._localCache);
+  }
+
   // Convert object to array function
   private _convertObjectToArray(data: any): Blog[] {
     return Object.keys(data).map((key: string) => {
