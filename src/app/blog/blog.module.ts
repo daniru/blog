@@ -12,6 +12,7 @@ import { ItemSectionComponent } from './components/item-section/item-section.com
 import { ItemFilesComponent } from './components/item-files/item-files.component';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { BlogFirebaseService } from './services//blog-firebase.service';
+import { ItemCommentsComponent } from './components/item-comments/item-comments.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { BlogFirebaseService } from './services//blog-firebase.service';
     SharedModule
   ],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
-  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent]
+  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent, ItemCommentsComponent]
 })
 export class BlogModule { }
