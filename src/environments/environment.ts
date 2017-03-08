@@ -6,5 +6,6 @@ export const environment = {
     databaseURL: 'https://danirublog-e85f1.firebaseio.com',
     storageBucket: 'danirublog-e85f1.appspot.com',
     messagingSenderId: '438404312729'
-  }
+  },
+  adminIds: ['oITo9pyPViUfZDGqY9h8x2XSKLG3']
 };
