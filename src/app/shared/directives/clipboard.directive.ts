@@ -1,4 +1,4 @@
-import { Directive, OnInit, Input, ElementRef, HostListener, RendererV2 } from '@angular/core';
+import { Directive, OnInit, Input, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import * as Clipboard from 'clipboard';
 
 @Directive({
@@ -27,7 +27,7 @@ export class ClipboardDirective  {
     }
   }
 
-  constructor(private _element: ElementRef, private _renderer: RendererV2) {
+  constructor(private _element: ElementRef, private _renderer: Renderer2) {
   }
 
   private _copyToClipboard() {
