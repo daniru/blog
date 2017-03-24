@@ -1,6 +1,6 @@
 # Blog
 
-This blog has been created using angularCLI with the lastest Angular 4.0.0-RC.
+This blog has been created using angularCLI with the lastest Angular 4.
 
 The goal is create the blog that post how it has been build step by step using angular/cli. 
 
@@ -11,8 +11,8 @@ As a prove of concept, we will connect to Firebase for authenticate and database
 ## Step 1
 
 - Tooling 
-    - Angular CLI RC.1
-- Create Angular App.
+    - Angular CLI
+- Create Angular v4 App.
 - Create a Github Repository and push the project.
 - Deploy to Github Pages.
 
