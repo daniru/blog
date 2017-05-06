@@ -1,7 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
-import { AngularFire } from 'angularfire2';
-import { Query } from 'angularfire2/interfaces';
+import { AngularFireDatabase } from 'angularfire2/database';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import 'rxjs/Rx';
@@ -26,13 +25,13 @@ export class BlogFirebaseService {
   private _localCache: Blog[] = [];
   private _blogSubject: Subject<Blog[]>;
 
-  constructor(public af: AngularFire, public authService: AuthService) {
+  constructor(public afdb: AngularFireDatabase, public authService: AuthService) {
     this._page = 1;
     this._count = 0;
     this._blogsByPage = 6;
 
     this._blogSubject = new Subject<Blog[]>();
-    this.af.database.list('/blog')
+    this.afdb.list('/blog')
       .map((x: Blog[]) => { return x; })
       .do((x) => { this._localCache = x; })
       .do((x) => this._blogSubject.next(x))

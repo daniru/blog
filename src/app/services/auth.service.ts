@@ -2,8 +2,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable, Subject } from 'rxjs/Rx';
 import { User } from '../models/user';
 import { Injectable } from '@angular/core';
-import { AngularFire, FirebaseAuthState, AuthProviders, AuthMethods } from 'angularfire2';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -13,20 +13,17 @@ export class AuthService {
   public userSubject: Subject<User>;
   public user: User;
 
-  constructor(private af: AngularFire) {
+  constructor(public afAuth: AngularFireAuth) {
     this.userSubject = new Subject<User>();
     this._proccessAuthState(null);
-    this.af.auth.subscribe((x) => this._proccessAuthState(x) );
+    this.afAuth.authState.subscribe((x) => this._proccessAuthState(x) );
   }
 
   login(provider: string): Observable<string> {
     const fbProvider = this._getProvider(provider);
     if (fbProvider !== null) {
       return Observable.fromPromise(
-        <Promise<FirebaseAuthState>>this.af.auth.login({
-          provider: fbProvider,
-          method: AuthMethods.Popup
-        }))
+        <Promise<any>> this.afAuth.auth.signInWithPopup(fbProvider))
       .map((x) => { return null; })
       .catch((x: firebase.auth.Error) => {
         return Observable.of(x.message);
@@ -37,39 +34,26 @@ export class AuthService {
   }
 
   logout() {
-     this.af.auth.logout();
+     this.afAuth.auth.signOut();
   }
 
-  private _getProvider(provider: string): AuthProviders {
+  private _getProvider(provider: string): firebase.auth.AuthProvider {
     switch (provider) {
-      case 'github': return AuthProviders.Github;
-      case 'google': return AuthProviders.Google;
-      case 'twitter': return AuthProviders.Twitter;
+      case 'github': return new firebase.auth.GithubAuthProvider();
+      case 'google': return new firebase.auth.GoogleAuthProvider();
+      case 'twitter': return new firebase.auth.TwitterAuthProvider();
       default: return null;
     }
   }
 
-  private _proccessAuthState(authState: FirebaseAuthState): void {
-    if (authState !== null && authState.google) {
+  private _proccessAuthState(authState: any): void {
+    if (authState !== null && authState.providerData != null && authState.providerData.length > 0) {
+      const providerData = authState.providerData[0];
       this.user = {
         isLogged: true,
         isAdmin: this._adminIds.indexOf(authState.uid) >= 0,
-        name: authState.google.displayName,
-        image: authState.google.photoURL
-      };
-    } else if (authState !== null && authState.twitter) {
-      this.user = {
-        isLogged: true,
-        isAdmin: this._adminIds.indexOf(authState.uid) >= 0,
-        name: authState.twitter.displayName,
-        image: authState.twitter.photoURL
-      };
-    } else if (authState !== null && authState.github) {
-      this.user = {
-        isLogged: true,
-        isAdmin: this._adminIds.indexOf(authState.uid) >= 0,
-        name: authState.github.displayName,
-        image: authState.github.photoURL
+        name: providerData.displayName,
+        image: providerData.photoURL
       };
     } else {
       this.user = { isLogged: false, isAdmin: false, name: null, image: null };
