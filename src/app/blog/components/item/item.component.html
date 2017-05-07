@@ -1,11 +1,13 @@
-<div class="container" *ngIf="blog">
+<div class="container" *ngIf="blog && !editMode">
   <md-card>
     <md-card-header>
-      <dr-item-header [blog]="blog" [headerLink]="false"></dr-item-header>
+      <dr-item-header [blog]="blog" [headerLink]="false" (editMode)="onEditClick()" (delete)="onDelete()"></dr-item-header>
     </md-card-header> 
     <md-card-content>
         <dr-item-section *ngFor="let section of blog.sections" [section]="section"></dr-item-section>
         <dr-item-comments></dr-item-comments>
     </md-card-content>
   </md-card>
+</div><div class="container" *ngIf="editMode">
+  <button (click)="onSave($event)" >Save</button>
 </div>

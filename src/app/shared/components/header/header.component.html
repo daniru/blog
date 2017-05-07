@@ -1,5 +1,8 @@
 <md-toolbar color="primary">
   <div class="logo" routerLink="/">Daniru</div>
   <span class="fill-remaining-space"></span>
+  <button md-icon-button routerLink="/new" *ngIf="authService.user.isAdmin" mdTooltip="Add Post">
+    <i class="material-icons">add</i>
+  </button>
   <dr-auth></dr-auth>
 </md-toolbar>
