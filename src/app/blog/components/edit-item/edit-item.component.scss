@@ -1,0 +1,22 @@
+@import "../../../../styles/_colors";
+
+.container {
+  padding-top: 10px;
+}
+
+.section {
+  border-left: 3px solid $color200;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+/deep/ {
+  input.ng-invalid {
+    color: $red !important;
+  }
+  input:-webkit-autofill {
+    color: inherit;
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+  }
+}
+

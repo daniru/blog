@@ -8,6 +8,5 @@
         <dr-item-comments></dr-item-comments>
     </md-card-content>
   </md-card>
-</div><div class="container" *ngIf="editMode">
-  <button (click)="onSave($event)" >Save</button>
 </div>
+<dr-edit-item [blog]="blog" *ngIf="editMode" (save)="onSave($event)"></dr-edit-item>

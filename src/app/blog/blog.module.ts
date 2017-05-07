@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule, MdInputModule } from '@angular/material';
 import { BlogRoutingModule } from './blog-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { BlogService } from './services/blog.service';
@@ -13,16 +14,18 @@ import { ItemFilesComponent } from './components/item-files/item-files.component
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { BlogFirebaseService } from './services//blog-firebase.service';
 import { ItemCommentsComponent } from './components/item-comments/item-comments.component';
+import { EditItemComponent } from './components/edit-item/edit-item.component';
 
 @NgModule({
   imports: [
     CommonModule,
     BlogRoutingModule,
-    MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule,
+    FormsModule, ReactiveFormsModule,
+    MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule, MdInputModule,
     SharedModule
   ],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
   declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent,
-    ItemFilesComponent, PaginationComponent, ItemCommentsComponent]
+    ItemFilesComponent, PaginationComponent, ItemCommentsComponent, EditItemComponent]
 })
 export class BlogModule { }

@@ -1,0 +1,19 @@
+<div class="container" *ngIf="form">
+  <md-card class="row">
+    <form [formGroup]="form">
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Key" formControlName="key" type="text" required>
+      </md-input-container>
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Header" formControlName="header" type="text">
+      </md-input-container>
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Title" formControlName="title" type="text" required>
+      </md-input-container>
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Publish" formControlName="date_published" type="datetime-local">
+      </md-input-container>
+      <button md-raised-button color="primary" (click)="onSave($event)" [disabled]="!form.valid">Save</button>
+    </form>
+  </md-card>
+</div>
