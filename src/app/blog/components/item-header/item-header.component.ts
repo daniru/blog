@@ -1,8 +1,7 @@
-import { Component, OnChanges, Input, Inject } from '@angular/core';
+import { Component, OnChanges, Input, Inject, EventEmitter, Output  } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 import { Blog } from '../../models/blog';
-
-const window: any = {};
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'dr-item-header',
@@ -13,10 +12,12 @@ export class ItemHeaderComponent implements OnChanges {
 
   @Input() blog: Blog;
   @Input() headerLink: boolean;
+  @Output() editMode = new EventEmitter();
+  @Output() delete = new EventEmitter();
 
-  public socialLinks: any[];
+  socialLinks: any[];
 
-  constructor(@Inject(DOCUMENT) private document: any) {
+  constructor(@Inject(DOCUMENT) private document: any, public authService: AuthService) {
     this.socialLinks = [];
   }
 
@@ -25,6 +26,15 @@ export class ItemHeaderComponent implements OnChanges {
       this._populateSocialLinks();
     }
   }
+
+  onEditClick() {
+    this.editMode.emit();
+  }
+
+  onDeleteClick() {
+    this.delete.emit();
+  }
+
 
   private _populateSocialLinks() {
       const shareText = `Have a look the new post by daniru ${this.blog.title}`;

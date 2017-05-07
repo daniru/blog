@@ -1,4 +1,17 @@
 <md-card-title>
+  <button md-icon-button [mdMenuTriggerFor]="menu" class="menu" *ngIf="!headerLink && authService.user.isAdmin">
+    <md-icon>more_vert</md-icon>
+  </button>
+  <md-menu #menu="mdMenu">
+    <button md-menu-item (click)="onEditClick()">
+      <md-icon>mode_edit</md-icon>
+      <span>Edit</span>
+    </button>
+    <button md-menu-item (click)="onDeleteClick()">
+      <md-icon>delete</md-icon>
+      <span>Delete</span>
+    </button>
+  </md-menu>
   <h2 *ngIf="blog.header"  color="primary">{{blog.header}}</h2>
   <h3>Article By <span>Daniru</span> &#8226; {{blog.date_published | date:'dd MMMM y'}}</h3>
   <h1 *ngIf="!headerLink">{{blog.title}}</h1>

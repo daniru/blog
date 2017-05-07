@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdCardModule, MdButtonModule, MdTabsModule } from '@angular/material';
+import { MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule } from '@angular/material';
 import { BlogRoutingModule } from './blog-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { BlogService } from './services/blog.service';
@@ -18,10 +18,11 @@ import { ItemCommentsComponent } from './components/item-comments/item-comments.
   imports: [
     CommonModule,
     BlogRoutingModule,
-    MdCardModule, MdButtonModule, MdTabsModule,
+    MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule,
     SharedModule
   ],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
-  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent, ItemCommentsComponent]
+  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent,
+    ItemFilesComponent, PaginationComponent, ItemCommentsComponent]
 })
 export class BlogModule { }
