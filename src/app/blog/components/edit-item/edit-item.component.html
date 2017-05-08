@@ -14,6 +14,18 @@
         <input mdInput placeholder="Publish" formControlName="date_published" type="datetime-local">
       </md-input-container>
       <button md-raised-button color="primary" (click)="onSave($event)" [disabled]="!form.valid">Save</button>
+      
+      <div formArrayName="sections">
+        <div *ngFor="let control of (form.controls['sections'].controls | orderByOrder); let i = index;" class="section">
+          <dr-edit-item-section
+            [form]="control"
+            [showSwap]="form.controls['sections'].controls.length > (i + 1)"
+            (moveSwap)="onSwapSection(control.value.order)"
+            (deleteSection)="onDeleteSection(control.value.order)"
+            (addSection)="onAddSection(control.value.order)">
+          </dr-edit-item-section>
+        </div>
+      </div>
     </form>
   </md-card>
 </div>

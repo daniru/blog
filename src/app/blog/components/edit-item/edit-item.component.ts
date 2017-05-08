@@ -29,6 +29,35 @@ export class EditItemComponent implements OnChanges {
     this.save.emit(this.form.value);
   }
 
+  onDeleteSection(order: number) {
+    const control = <FormArray>this.form.controls['sections'];
+    const index = control.getRawValue().findIndex((x) => x.order === order);
+    control.removeAt(index);
+    const values = <Section[]>control.getRawValue();
+    values.forEach((x) => { if (x.order >= order) { x.order--; }});
+    control.patchValue(values);
+  }
+
+  onSwapSection(order: any) {
+    const control = <FormArray>this.form.controls['sections'];
+    const values = <Section[]>control.getRawValue();
+    const obj1 = values.find((x) => x.order === order);
+    const obj2 = values.find((x) => x.order === order + 1);
+    if (obj1 && obj2) {
+      obj1.order ++;
+      obj2.order --;
+      control.patchValue(values);
+    }
+  }
+
+  onAddSection(order: any) {
+    const control = <FormArray>this.form.controls['sections'];
+    const values = <Section[]>control.getRawValue();
+    values.forEach((x) => { if (x.order > order) { x.order++; }});
+    control.patchValue(values);
+    control.push(this._fillSection({ order: order + 1, text: null, files: null }));
+  }
+
   private _fillForm() {
     const blog = this.blog || { key: '', header: '', title: '', date_published: '', sections: [null] };
     this.form = this.formBuilder.group({
@@ -78,3 +107,4 @@ export class EditItemComponent implements OnChanges {
   }
 
 }
+

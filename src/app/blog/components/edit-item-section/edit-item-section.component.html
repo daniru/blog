@@ -1,0 +1,21 @@
+<div [formGroup]="form" class="form">
+  <div class="flex">
+    <div id="wrapper" [innerHTML]="form.controls['text'].value | markdown" *ngIf="!editText" (click)="onTextClick($event)"></div>
+    <md-input-container class="full-size" *ngIf="editText">
+      <textarea mdInput md-textarea-autosize formControlName="text" rows=10 (focusout)="onTextAreaFocusOut()" class="full-size"></textarea>
+    </md-input-container>
+  </div>
+</div>
+<md-toolbar>
+  <button md-icon-button class="swap" *ngIf="showSwap" (click)="onSwapSection()" mdTooltip="Swap Sections">
+    <md-icon>swap_vert</md-icon>
+  </button>
+  <span class="fill-remaining-space"></span>
+  <button md-icon-button class="addsection" (click)="onAddSection()" mdTooltip="Add Section">
+    <md-icon>add_circle_outline</md-icon>
+  </button>
+  <span class="fill-remaining-space"></span>
+  <button md-icon-button class="delete" (click)="onDeleteSection()" mdTooltip="Delete Section">
+    <md-icon color="red">delete</md-icon>
+  </button>
+</md-toolbar>
