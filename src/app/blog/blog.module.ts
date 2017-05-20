@@ -16,6 +16,7 @@ import { BlogFirebaseService } from './services//blog-firebase.service';
 import { ItemCommentsComponent } from './components/item-comments/item-comments.component';
 import { EditItemComponent } from './components/edit-item/edit-item.component';
 import { EditItemSectionComponent } from './components/edit-item-section/edit-item-section.component';
+import { EditItemFileComponent } from './components/edit-item-file/edit-item-file.component';
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import { EditItemSectionComponent } from './components/edit-item-section/edit-it
   ],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
   declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent,
-    ItemFilesComponent, PaginationComponent, ItemCommentsComponent, EditItemComponent, EditItemSectionComponent]
+    ItemFilesComponent, PaginationComponent, ItemCommentsComponent, EditItemComponent, EditItemSectionComponent, EditItemFileComponent]
 })
 export class BlogModule { }

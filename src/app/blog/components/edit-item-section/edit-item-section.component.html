@@ -1,14 +1,27 @@
 <div [formGroup]="form" class="form">
-  <div class="flex">
+    <div class="flex">
     <div id="wrapper" [innerHTML]="form.controls['text'].value | markdown" *ngIf="!editText" (click)="onTextClick($event)"></div>
     <md-input-container class="full-size" *ngIf="editText">
       <textarea mdInput md-textarea-autosize formControlName="text" rows=10 (focusout)="onTextAreaFocusOut()" class="full-size"></textarea>
     </md-input-container>
   </div>
+  <section *ngIf="form.controls.files.value.length > 0">
+    <div *ngFor="let control of (form.controls.files.controls | orderByOrder); let i = index;" class="editfile" >
+      <dr-edit-item-file 
+        [form]="control"
+        [showSwap]="form.controls.files.value.length > (i + 1)"
+        (moveSwap)="onSwapFile(control.value.order)"
+        (deleteFile)="onDeleteFile(control.value.order)">
+      </dr-edit-item-file>
+    </div>
+  </section>
 </div>
 <md-toolbar>
   <button md-icon-button class="swap" *ngIf="showSwap" (click)="onSwapSection()" mdTooltip="Swap Sections">
     <md-icon>swap_vert</md-icon>
+  </button>
+  <button md-icon-button class="addfile"  (click)="onAddFile()" mdTooltip="Add File">
+    <md-icon>note_add</md-icon>
   </button>
   <span class="fill-remaining-space"></span>
   <button md-icon-button class="addsection" (click)="onAddSection()" mdTooltip="Add Section">

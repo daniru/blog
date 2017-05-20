@@ -58,6 +58,14 @@ export class EditItemComponent implements OnChanges {
     control.push(this._fillSection({ order: order + 1, text: null, files: null }));
   }
 
+  onAddFile(order: any) {
+    const control = <FormArray>this.form.controls['sections'];
+    const index = control.getRawValue().findIndex((x) => x.order === order);
+    const section = <FormArray>(<FormGroup>control.at(index)).controls['files'];
+    const values = <File[]>section.getRawValue();
+    section.push(this._fillFile({ order: values.length + 1 , content: null, name: null, path: null }));
+  }
+  
   private _fillForm() {
     const blog = this.blog || { key: '', header: '', title: '', date_published: '', sections: [null] };
     this.form = this.formBuilder.group({

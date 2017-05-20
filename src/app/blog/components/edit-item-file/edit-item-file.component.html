@@ -1,0 +1,35 @@
+<div [formGroup]="form">
+
+  <section *ngIf="!editFile">
+    <md-toolbar>
+      <label>{{form.value.path}}{{form.value.name}}</label>
+      <span class="fill-remaining-space"></span>
+      <button md-icon-button class="swap" mdTooltip="Swap Sections" *ngIf="showSwap" (click)="onSwapFile()">
+        <md-icon>swap_vert</md-icon>
+      </button>
+      <button md-icon-button class="delete"  mdTooltip="Delete Section" (click)="onDeleteFile()">
+        <md-icon color="red">delete</md-icon>
+      </button>
+    </md-toolbar>
+    <pre class="prettyprint prettyprinted" [innerHTML]="form.value.content | prettyfile:form.value.name" (click)="onTextClick($event, focusable)"></pre>
+  </section>
+
+  <div *ngIf="editFile">
+    <md-toolbar>
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Path" formControlName="path" type="text">
+      </md-input-container>
+      <md-input-container class="full-width">
+        <input mdInput placeholder="Filename" formControlName="name" type="text">
+      </md-input-container>
+      <span class="fill-remaining-space"></span>
+      <button md-icon-button class="done" mdTooltip="Finish Edit" (click)="onFinishEdit()">
+        <md-icon color="red">done</md-icon>
+      </button>
+    </md-toolbar>
+    <md-input-container class="full-width">
+      <textarea mdInput formControlName="content" cols="100" rows="10"></textarea>
+    </md-input-container>
+  </div>
+
+</div>

@@ -1,0 +1,48 @@
+@import "../../../../styles/_colors";
+
+:host {
+  width: 100%;
+}
+
+label {
+  font-size: 15px;
+  padding: 7px 0 0 10px;
+}
+
+input {
+  font-size: 14px;
+}
+
+md-toolbar {
+  background: $color100;
+  color: white;
+  font-size: 14px;
+  min-height: auto;
+  padding: 3px;
+
+  /deep/ md-toolbar-row {
+    height: auto;
+  }
+}
+
+pre {
+  margin-top: 0;
+  overflow: auto;
+}
+
+/deep/ {
+  button {
+    &.swap {
+      color: $blue;
+    }
+    &.delete {
+      color: $red;
+    }
+    &.addfile {
+      color: $purple;
+    }
+    &.addsection {
+      color: $green;
+    }
+  }
+}
