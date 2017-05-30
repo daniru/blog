@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Blog } from '../models/blog';
 import 'rxjs/Rx';
 
@@ -7,10 +8,12 @@ import 'rxjs/Rx';
 export class BlogService {
 
   // we keep the blogs in memory
+  public blog: Subject<Blog[]>;
   private _blogs: Blog[];
 
   // We populate the mock data in the constructor
   constructor() {
+    this.blog = new Subject<Blog[]>();
     this._blogs = [
       { key: 'blog_1', title: 'Blog 1' },
       { key: 'blog_2', title: 'Blog 2' }

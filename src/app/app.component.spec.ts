@@ -2,6 +2,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './shared/components//header/header.component';
+
 
 describe('AppComponent 2', () => {
   beforeEach(async(() => {
@@ -10,7 +12,8 @@ describe('AppComponent 2', () => {
         RouterTestingModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        HeaderComponent
       ],
     }).compileComponents();
   }));
@@ -21,16 +24,19 @@ describe('AppComponent 2', () => {
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'dr works!'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('dr works!');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
+  it('should render title in a tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('dr works!');
+    expect(compiled.querySelector('a').textContent).toContain('Home');
   }));
+
+  it('should title link to home page', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    console.log(compiled.querySelector('a').href);
+    expect(compiled.querySelector('a').textContent).toContain('Home');
+  }));
+
 });
