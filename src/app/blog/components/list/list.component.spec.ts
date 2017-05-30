@@ -15,7 +15,6 @@ describe('ListComponent', () => {
   let blogService: BlogService;
   let spy: jasmine.Spy;
   let debug: DebugElement;  // the DebugElement with the welcome message
-  let element: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({

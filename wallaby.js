@@ -36,6 +36,9 @@ module.exports = function (wallaby) {
 
   return {
     files: [
+      {pattern: 'src/_testing/*.ts', instrument: false },
+      {pattern: 'src/main.ts', instrument: false, load: true, ignore: true },
+      {pattern: 'src/test.ts', instrument: false, load: true, ignore: true },
       {pattern: 'src/**/*.ts', load: false},
       {pattern: 'src/**/*.d.ts', ignore: true},
       {pattern: 'src/**/*.css', load: false},
@@ -46,6 +49,7 @@ module.exports = function (wallaby) {
       {pattern: 'src/**/*.html', load: false},
       {pattern: 'src/**/*.json', load: false},
       {pattern: 'src/**/*spec.ts', ignore: true}
+
     ],
 
     tests: [

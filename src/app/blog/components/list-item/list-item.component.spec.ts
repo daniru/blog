@@ -30,8 +30,7 @@ describe('ListItemComponent', () => {
   it('should display title and link when blog', () => {
     component.blog = { key: '1', title: 'title' };
     fixture.detectChanges();
-    let element = debug.nativeElement;
-    element
+    const element = debug.nativeElement;
   });
 
 });

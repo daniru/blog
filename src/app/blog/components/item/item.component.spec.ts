@@ -5,7 +5,7 @@ import { DebugElement } from '@angular/core';
 
 import { ItemComponent } from './item.component';
 import { BlogService } from '../../services/blog.service';
-import { ActivatedRoute, ActivatedRouteStub, Router, RouterStub } from '../../../../testing/router-stubs';
+import { ActivatedRoute, ActivatedRouteStub, Router, RouterStub } from '../../../../_testing/router-stubs';
 
 describe('ItemComponent', () => {
   let activatedRoute: ActivatedRouteStub;
