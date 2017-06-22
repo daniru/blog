@@ -22,6 +22,7 @@ import { ItemCommentsComponent } from './components/item-comments/item-comments.
     SharedModule
   ],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
-  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent, ItemCommentsComponent]
+  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent,
+    PaginationComponent, ItemCommentsComponent]
 })
 export class BlogModule { }

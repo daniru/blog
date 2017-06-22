@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import { BlogService } from '../../services/blog.service';
 import { Blog } from '../../models/blog';
 import { AuthService } from '../../../services/auth.service';
@@ -26,11 +27,11 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this._blogSubscription) { this._blogSubscription.unsubscribe(); }
     if (this._authSubscription) { this._authSubscription.unsubscribe(); }
+
   }
 
   updatePage(page: number) {
     this.blogService.setPage(page);
   }
-
 
 }

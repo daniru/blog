@@ -15,6 +15,7 @@ export class ClipboardDirective  {
       this._button.innerHTML = 'copy';
       this._button.className = 'copybutton mat-accent mat-raised-button';
       this._element.nativeElement.append(this._button);
+      console.log(this._element)
       this._renderer.listen(this._button, 'click', () => { this._copyToClipboard(); return true; });
     } else {
       this._button.className = 'copybutton mat-accent mat-raised-button';
@@ -27,8 +28,7 @@ export class ClipboardDirective  {
     }
   }
 
-  constructor(private _element: ElementRef, private _renderer: Renderer2) {
-  }
+  constructor(private _element: ElementRef, private _renderer: Renderer2) { }
 
   private _copyToClipboard() {
     const clipboard = new Clipboard(this._element.nativeElement, { text: () => this.text });
