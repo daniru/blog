@@ -36,7 +36,7 @@ module.exports = function (wallaby) {
 
   return {
     files: [
-      {pattern: 'src/_testing/*.ts', instrument: false },
+      {pattern: 'src/_testing/*.ts', instrument: true, load: false, ignore: false },
       {pattern: 'src/main.ts', instrument: false, load: true, ignore: true },
       {pattern: 'src/test.ts', instrument: false, load: true, ignore: true },
       {pattern: 'src/**/*.ts', load: false},
@@ -69,7 +69,12 @@ module.exports = function (wallaby) {
     },
 
     env: {
-      kind: 'electron'
+      kind: 'electron',
+      options: {
+        webPreferences: {
+          nodeIntegration: true
+        }
+      }
     },
 
     postprocessor: webpackPostprocessor,
@@ -78,6 +83,7 @@ module.exports = function (wallaby) {
       window.__moduleBundler.loadTests();
     },
 
+    filesWithNoCoverageCalculated: ['src/_testing/**/*'],
     debug: true
   };
 };

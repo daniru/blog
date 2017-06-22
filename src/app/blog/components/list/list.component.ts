@@ -10,13 +10,10 @@ import { Blog } from '../../models/blog';
 })
 export class ListComponent implements OnInit {
 
-  // list of blogs in the view
   public list: Observable<Array<Blog>>;
 
-  // injecting blogService in the components
   constructor(public blogService: BlogService) {}
 
-  // populating the initial data in the inizialiazation of the component
   ngOnInit() {
      this.list = this.blogService.getBlogs();
   }

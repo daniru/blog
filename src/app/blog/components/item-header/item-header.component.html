@@ -1,4 +1,4 @@
-<md-card-title>
+<md-card-title *ngIf="blog">
   <h2 *ngIf="blog.header"  color="primary">{{blog.header}}</h2>
   <h3>Article By <span>Daniru</span> &#8226; {{blog.date_published | date:'dd MMMM y'}}</h3>
   <h1 *ngIf="!headerLink">{{blog.title}}</h1>

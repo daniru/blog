@@ -20,6 +20,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     SharedModule
   ],
   providers: [BlogService],
-  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent, PaginationComponent]
+  declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent,
+    ItemSectionComponent, ItemFilesComponent, PaginationComponent ]
 })
 export class BlogModule { }

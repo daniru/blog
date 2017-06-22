@@ -1,42 +1,48 @@
-import { TestBed, async } from '@angular/core/testing';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { By } from '@angular/platform-browser';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './shared/components//header/header.component';
 
+let component: AppComponent;
+let fixture: ComponentFixture<AppComponent>;
 
-describe('AppComponent 2', () => {
+describe('AppComponent', () => {
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ],
+      schemas: [ NO_ERRORS_SCHEMA ],
       declarations: [
-        AppComponent,
-        HeaderComponent
+        AppComponent
       ],
-    }).compileComponents();
+    })
+    .compileComponents()
+    .then(() => {
+      fixture = TestBed.createComponent(AppComponent);
+      component = fixture.componentInstance;
+    });
   }));
 
-  it('should create the app', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  }));
-
-  it('should render title in a tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('a').textContent).toContain('Home');
+  });
+
+  it ('can instanciate it', () => {
+    expect(component).not.toBeNull();
+  });
+
+  it('should contain header element', async(() => {
+    const header = fixture.debugElement.queryAll(By.css('dr-header'));
+    expect(header.length).toBe(1);
   }));
 
-  it('should title link to home page', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    console.log(compiled.querySelector('a').href);
-    expect(compiled.querySelector('a').textContent).toContain('Home');
+  it('should contain reouter outlet', async(() => {
+    const header = fixture.debugElement.queryAll(By.css('router-outlet'));
+    expect(header.length).toBe(1);
   }));
-
 });

@@ -22,13 +22,15 @@ describe('HeaderComponent', () => {
       fixture = TestBed.createComponent(HeaderComponent);
       component = fixture.componentInstance;
       debug = fixture.debugElement;
+    });
+  }));
 
+  beforeEach(() => {
       fixture.detectChanges();
       linkDes = fixture.debugElement.queryAll(By.directive(RouterLinkStubDirective));
       // get the attached link directive instances using the DebugElement injectors
       links = linkDes.map(de => de.injector.get(RouterLinkStubDirective) as RouterLinkStubDirective);
-    });
-  }));
+  });
 
   it('should be created', () => {
     expect(component).toBeTruthy();
