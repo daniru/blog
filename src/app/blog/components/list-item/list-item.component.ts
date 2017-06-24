@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Blog } from '../../models/blog';
 import { Section } from '../../models/section';
 
@@ -12,7 +12,7 @@ export class ListItemComponent implements OnChanges {
   @Input() blog: Blog;
   public firstSection: Section;
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.blog) {
       this.firstSection = this.blog.sections.find((x) => x.order === 1);
     }

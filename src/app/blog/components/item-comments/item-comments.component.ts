@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
-declare var DISQUS: any;
+declare const DISQUS: any;
 
 @Component({
   selector: 'dr-item-comments',

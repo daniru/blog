@@ -1,5 +1,5 @@
-<div *ngFor="let item of list">
-  <dr-list-item [blog]="item"></dr-list-item>
+<div *ngFor="let item of list | async">
+    <dr-list-item [blog]="item"></dr-list-item>
 </div>
 <div class="container">
   <dr-pagination *ngIf="blogService.pages.length > 1" 

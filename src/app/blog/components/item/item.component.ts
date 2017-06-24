@@ -16,16 +16,24 @@ export class ItemComponent implements OnInit, OnDestroy {
   public editMode: boolean;
   private _blogSubscription: Subscription;
 
+
   constructor(public route: ActivatedRoute, public router: Router, public blogService: BlogService, public authService: AuthService) { }
 
  ngOnInit() {
     this.route.params.forEach((params: Params) => {
       const key = params['key'];
+
       if (key === 'new') {
         this.blog = null;
         this.editMode = true;
       } else {
-        this._blogSubscription = this.blogService.getBlog(key).subscribe(data => this.blog = data);
+        this._blogSubscription = this.blogService.getBlog(key).subscribe((data: any) => {
+          if (data) {
+            this.blog = data;
+          } else if (data === undefined) {
+            this.router.navigate(['/']);
+          }
+        });
       }
     });
   }

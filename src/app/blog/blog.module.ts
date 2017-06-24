@@ -26,8 +26,11 @@ import { EditItemFileComponent } from './components/edit-item-file/edit-item-fil
     MdCardModule, MdButtonModule, MdTabsModule, MdMenuModule, MdIconModule, MdInputModule, MdToolbarModule,
     SharedModule
   ],
+  // providers: [ BlogService],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
+
   declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent,
     ItemFilesComponent, PaginationComponent, ItemCommentsComponent, EditItemComponent, EditItemSectionComponent, EditItemFileComponent]
+
 })
 export class BlogModule { }

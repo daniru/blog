@@ -1,7 +1,8 @@
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-declare var require: any;
+declare const require: any;
 const PR = require('google-code-prettify/bin/prettify.min');
 
 @Pipe({
