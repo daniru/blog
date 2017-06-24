@@ -13,19 +13,18 @@ import { AuthService } from '../../../services/auth.service';
 export class ListComponent implements OnInit, OnDestroy {
 
   // list of blogs in the view
-  public list: Blog[];
+  public list: Observable<Blog[]>;
   private _blogSubscription: Subscription;
   private _authSubscription: Subscription;
 
   constructor(public blogService: BlogService, private _authService: AuthService) { }
 
   ngOnInit() {
-    this._blogSubscription = this.blogService.getBlogs().subscribe(items => { this.list = items; });
+    this.list = this.blogService.getBlogs();
     this._authSubscription = this._authService.userSubject.subscribe((user) => { this.blogService.refresh(); });
   }
 
   ngOnDestroy() {
-    if (this._blogSubscription) { this._blogSubscription.unsubscribe(); }
     if (this._authSubscription) { this._authSubscription.unsubscribe(); }
 
   }

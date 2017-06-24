@@ -9,19 +9,20 @@ import { BlogService } from '../../services/blog.service';
 import { ActivatedRoute, ActivatedRouteStub, Router, RouterStub } from '../../../../_testing/router-stubs';
 
 const BlogServiceStub = {
-  getBlogs: () => { return Observable.of([]); },
-  getBlog: () => { return Observable.of({}); }
+  getBlogs: () => { },
+  getBlog: () => { }
 };
+
+let activatedRoute: ActivatedRouteStub;
+let component: ItemComponent;
+let fixture: ComponentFixture<ItemComponent>;
+let blogService: BlogService;
+let spy: jasmine.Spy;
+let debug: DebugElement;
 
 describe('Blog Module', () => {
 
   describe('Item Component', () => {
-    let activatedRoute: ActivatedRouteStub;
-    let component: ItemComponent;
-    let fixture: ComponentFixture<ItemComponent>;
-    let blogService: BlogService;
-    let spy: jasmine.Spy;
-    let debug: DebugElement;
 
     describe('initial Test', () => {
 
@@ -32,15 +33,14 @@ describe('Blog Module', () => {
           schemas: [ NO_ERRORS_SCHEMA ],
           providers: [ { provide: BlogService, useValue: BlogServiceStub } ]
         })
-        .compileComponents();
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ItemComponent);
+          component = fixture.componentInstance;
+          blogService = fixture.debugElement.injector.get(BlogService);
+          spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of({ title: 'myblog' }));
+        });
       }));
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ItemComponent);
-        component = fixture.componentInstance;
-        blogService = fixture.debugElement.injector.get(BlogService);
-        spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of({ title: 'myblog' }));
-      });
 
       it('should be created', () => {
         expect(component).toBeTruthy();
@@ -70,16 +70,15 @@ describe('Blog Module', () => {
             { provide: ActivatedRoute, useValue: activatedRoute }
           ]
         })
-        .compileComponents();
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ItemComponent);
+          component = fixture.componentInstance;
+          blogService = fixture.debugElement.injector.get(BlogService);
+          spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of({ title: 'myblog', sections: [{}, {}, {}] }));
+          debug = fixture.debugElement;
+        });
       }));
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ItemComponent);
-        component = fixture.componentInstance;
-        blogService = fixture.debugElement.injector.get(BlogService);
-        spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of({ title: 'myblog', sections: [{}, {}, {}] }));
-        debug = fixture.debugElement;
-      });
 
       it('should request the blog and display title', () => {
         fixture.detectChanges();
@@ -96,6 +95,16 @@ describe('Blog Module', () => {
 
         const elements = fixture.debugElement.queryAll(By.css('dr-item-section'));
         expect(elements.length).toBe(3);
+      });
+
+      it('should request the blog and display comments section', () => {
+        fixture.detectChanges();
+        expect(component.blog).toBeDefined();
+        expect(spy.calls.any()).toBe(true, 'getBlog called');
+        expect(component.blog.sections.length).toBe(3);
+
+        const elements = fixture.debugElement.queryAll(By.css('dr-item-comments'));
+        expect(elements.length).toBe(1);
       });
 
     });
@@ -117,16 +126,15 @@ describe('Blog Module', () => {
             { provide: ActivatedRoute, useValue: activatedRoute },
           ]
         })
-        .compileComponents();
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ItemComponent);
+          component = fixture.componentInstance;
+          blogService = fixture.debugElement.injector.get(BlogService);
+          spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of(undefined));
+          debug = fixture.debugElement;
+        });
       }));
-
-      beforeEach(() => {
-        fixture = TestBed.createComponent(ItemComponent);
-        component = fixture.componentInstance;
-        blogService = fixture.debugElement.injector.get(BlogService);
-        spy = spyOn(blogService, 'getBlog').and.returnValue(Observable.of(undefined));
-        debug = fixture.debugElement;
-      });
 
       it('should request the blog and display nothing', () => {
         fixture.detectChanges();

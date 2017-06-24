@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Response, ResponseOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TestBed, inject, fakeAsync, } from '@angular/core/testing';
@@ -98,6 +99,24 @@ describe('BlogService', () => {
     expect(service.pages.length).toBe(3);
     service.setPage(2);
     expect(service.page).toBe(2);
+  });
+
+  it('should emit value when refresh is called', () => {
+    const body = { blog: [{}, {}, {}] };
+    const options = new ResponseOptions({ body: JSON.stringify(body)});
+    const response = new Response(options);
+    const spy = spyOn(httpSub, 'get').and.returnValue(Observable.of(response));
+    const service = new BlogService(<any>httpSub);
+    const sub = service.getBlogs().subscribe((x) => {
+      expect(x.length).toBe(2);
+    });
+    sub.unsubscribe();
+    service.setPage(2);
+    const sub2 = service.getBlogs().subscribe((x) => {
+      expect(x.length).toBe(1);
+    });
+    service.refresh();
+    sub2.unsubscribe();
   });
 
 });

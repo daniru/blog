@@ -46,7 +46,9 @@ export class BlogFirebaseService {
         const partial = this.authService.user.isAdmin ? _.orderBy(blogs, (x) => x.date_created)
           : _.orderBy(_.filter(blogs, (x) => x.date_published && moment(x.date_published).isSameOrBefore(moment.utc())),
              (x) => x.date_published);
+        console.log(partial);
         this._count = partial.length;
+        console.log(this._count);
         return partial.reverse().slice((this.page - 1) * this._blogsByPage, (this.page) * this._blogsByPage);
       });
   }

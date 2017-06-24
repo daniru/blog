@@ -1,3 +1,5 @@
+import { User } from './../../../models/user';
+import { AuthService } from './../../../services/auth.service';
 import { BehaviorSubject, } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Rx';
 import { async, ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
@@ -16,13 +18,16 @@ let blogService: BlogService;
 let spy: jasmine.Spy;
 let debug: DebugElement;  // the DebugElement with the welcome message
 
-// let data: BehaviorSubject<any[]>;
-
 const BlogServiceStub = {
     getBlogs: () => { return Observable.of([{}, {}]); },
     getBlog: () => { return Observable.of(); },
     setPage: () => {},
+    refresh: () => {},
     pages: [1, 2]
+};
+
+const AuthServiceStub = {
+  userSubject: new Subject<User>()
 };
 
 describe('ListComponent', () => {
@@ -32,7 +37,10 @@ describe('ListComponent', () => {
       declarations: [ ListComponent ],
       schemas: [ NO_ERRORS_SCHEMA ],
       imports: [ RouterTestingModule ],
-      providers: [ { provide: BlogService, useValue: BlogServiceStub }]
+      providers: [
+        { provide: BlogService, useValue: BlogServiceStub },
+        { provide: AuthService, useValue: AuthServiceStub }
+      ]
     })
     .compileComponents()
     .then(() => {
@@ -72,6 +80,14 @@ describe('ListComponent', () => {
     expect(spy.calls.any()).toBe(true, 'getBlogs called');
     expect(spy.calls.first().args.length).toBe(1);
     expect(spy.calls.first().args[0]).toBe(2)
+  });
+
+  it('should refresh when use changes', () => {
+    spy = spyOn(blogService, 'refresh').and.callThrough();
+    fixture.detectChanges();
+    expect(spy.calls.any()).toBe(false, 'should not be called');
+    AuthServiceStub.userSubject.next(<any>{});
+    expect(spy.calls.any()).toBe(true, 'Refresh should be called');
   });
 
 });

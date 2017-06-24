@@ -21,6 +21,7 @@ import { ItemCommentsComponent } from './components/item-comments/item-comments.
     MdCardModule, MdButtonModule, MdTabsModule,
     SharedModule
   ],
+  // providers: [ BlogService],
   providers: [{ provide: BlogService, useClass: BlogFirebaseService }],
   declarations: [ListComponent, ListItemComponent, ItemComponent, ItemHeaderComponent, ItemSectionComponent, ItemFilesComponent,
     PaginationComponent, ItemCommentsComponent]
